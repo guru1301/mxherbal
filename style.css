@@ -25,8 +25,8 @@
     
     /* Spacing & Layout */
     --max-content-width: 540px;
-    --nav-height-normal: 90px;
-    --nav-height-scrolled: 70px;
+    --nav-height-normal: 200px;
+    --nav-height-scrolled: 85px;
     
     /* Motion & Transitions */
     --transition-lux-slow: all 1.2s cubic-bezier(0.25, 1, 0.3, 1);
@@ -141,15 +141,37 @@ body:hover .custom-cursor-follower {
 }
 
 .logo-image {
-    height: 48px; /* Elegant legibility size in header */
+    height: 180px; /* Highly legible default desktop height */
     width: auto;
     display: block;
     object-fit: contain;
-    transition: transform var(--transition-lux-medium);
+    transition: height var(--transition-lux-medium), transform var(--transition-lux-medium);
+}
+
+.navbar.scrolled .logo-image {
+    height: 60px; /* Elegant smaller size on scroll */
 }
 
 .logo-link:hover .logo-image {
-    transform: scale(1.04);
+    transform: scale(1.03);
+}
+
+@media (max-width: 1024px) {
+    .logo-image {
+        height: 60px;
+    }
+    .navbar.scrolled .logo-image {
+        height: 52px;
+    }
+}
+
+@media (max-width: 767px) {
+    .logo-image {
+        height: 52px;
+    }
+    .navbar.scrolled .logo-image {
+        height: 44px;
+    }
 }
 
 /* Menu links */
