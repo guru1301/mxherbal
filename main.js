@@ -784,24 +784,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 isValid = false;
             }
             
-            // Phone validation
+            // WhatsApp validation
             const phoneVal = phoneInput.value.trim();
-            const localPhoneRegex = /^[0-9\s\-()]{6,15}$/;
+            const localPhoneRegex = /^[0-9]{10}$/;
             if (!phoneVal) {
-                errPhone.innerText = 'Please enter your phone number.';
+                errPhone.innerText = 'Please enter your WhatsApp number.';
                 isValid = false;
             } else if (!localPhoneRegex.test(phoneVal)) {
-                errPhone.innerText = 'Please enter a valid local phone number (6-15 digits).';
+                errPhone.innerText = 'Please enter a valid 10-digit WhatsApp number.';
                 isValid = false;
             }
             
             // Email validation
             const emailVal = emailInput.value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailVal) {
-                errEmail.innerText = 'Please enter your email address.';
-                isValid = false;
-            } else if (!emailRegex.test(emailVal)) {
+            if (emailVal && !emailRegex.test(emailVal)) {
                 errEmail.innerText = 'Please enter a valid email address.';
                 isValid = false;
             }
@@ -826,8 +823,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Generate WhatsApp redirect message
                 let messageText = `Hello MX Herbal,\n\nI have an enquiry about your products. Here are my details:\n\n`;
                 messageText += `Name: ${formData.name}\n`;
-                messageText += `Email: ${formData.email}\n`;
-                messageText += `Phone: ${formData.phone}\n\n`;
+                if (formData.email) {
+                    messageText += `Email: ${formData.email}\n`;
+                }
+                messageText += `WhatsApp: ${formData.phone}\n\n`;
                 
                 const interestSelect = document.getElementById('form-interest');
                 const interestText = interestSelect ? interestSelect.options[interestSelect.selectedIndex].text : '';
@@ -1269,21 +1268,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // Get inputs
             const nameInput = document.getElementById('order-name');
             const emailInput = document.getElementById('order-email');
-            const mobileInput = document.getElementById('order-mobile');
             const whatsappInput = document.getElementById('order-whatsapp');
             const messageInput = document.getElementById('order-message');
             
             // Get errors
             const errName = document.getElementById('order-error-name');
             const errEmail = document.getElementById('order-error-email');
-            const errMobile = document.getElementById('order-error-mobile');
             const errWhatsapp = document.getElementById('order-error-whatsapp');
             const errMessage = document.getElementById('order-error-message');
             
             // Clear prior errors
             errName.innerText = '';
             errEmail.innerText = '';
-            errMobile.innerText = '';
             errWhatsapp.innerText = '';
             errMessage.innerText = '';
             if (errorCart) errorCart.innerText = '';
@@ -1299,32 +1295,19 @@ document.addEventListener('DOMContentLoaded', () => {
             // Email validation
             const emailVal = emailInput.value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailVal) {
-                errEmail.innerText = 'Please enter your email.';
-                isValid = false;
-            } else if (!emailRegex.test(emailVal)) {
+            if (emailVal && !emailRegex.test(emailVal)) {
                 errEmail.innerText = 'Please enter a valid email.';
-                isValid = false;
-            }
-            
-            // Mobile validation
-            const mobileVal = mobileInput.value.trim();
-            const localPhoneRegex = /^[0-9\s\-()]{6,15}$/;
-            if (!mobileVal) {
-                errMobile.innerText = 'Please enter your mobile number.';
-                isValid = false;
-            } else if (!localPhoneRegex.test(mobileVal)) {
-                errMobile.innerText = 'Please enter a valid local phone number (6-15 digits).';
                 isValid = false;
             }
             
             // WhatsApp validation
             const whatsappVal = whatsappInput.value.trim();
+            const localPhoneRegex = /^[0-9]{10}$/;
             if (!whatsappVal) {
                 errWhatsapp.innerText = 'Please enter your WhatsApp number.';
                 isValid = false;
             } else if (!localPhoneRegex.test(whatsappVal)) {
-                errWhatsapp.innerText = 'Please enter a valid local phone number (6-15 digits).';
+                errWhatsapp.innerText = 'Please enter a valid 10-digit WhatsApp number.';
                 isValid = false;
             }
             
@@ -1343,12 +1326,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (isValid) {
                     // Submit Order request
-                    const mobileDial = document.getElementById('selector-order-mobile').getAttribute('data-dial-code') || '+91';
                     const whatsappDial = document.getElementById('selector-order-whatsapp').getAttribute('data-dial-code') || '+91';
                     const orderData = {
                         name: nameInput.value.trim(),
                         email: emailVal,
-                        mobile: `${mobileDial} ${mobileVal}`,
                         whatsapp: `${whatsappDial} ${whatsappVal}`,
                         message: messageInput.value.trim(),
                         products: { ...quantities },
@@ -1358,8 +1339,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Generate WhatsApp redirect message for Order
                     let messageText = `Hello MX Herbal,\n\nI would like to place an order. Here are my details:\n\n`;
                     messageText += `Name: ${orderData.name}\n`;
-                    messageText += `Email: ${orderData.email}\n`;
-                    messageText += `Mobile: ${orderData.mobile}\n`;
+                    if (orderData.email) {
+                        messageText += `Email: ${orderData.email}\n`;
+                    }
                     messageText += `WhatsApp: ${orderData.whatsapp}\n\n`;
                     messageText += `Products Ordered:\n`;
 
@@ -1423,11 +1405,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (isValid) {
                     // Submit Enquiry request
-                    const mobileDial = document.getElementById('selector-order-mobile').getAttribute('data-dial-code') || '+91';
+                    const whatsappDial = document.getElementById('selector-order-whatsapp').getAttribute('data-dial-code') || '+91';
                     const enquiryData = {
                         name: nameInput.value.trim(),
                         email: emailVal,
-                        phone: `${mobileDial} ${mobileVal}`, // map mobile to phone for api
+                        phone: `${whatsappDial} ${whatsappVal}`, // map whatsapp to phone for api
                         interest: document.getElementById('order-interest').value,
                         message: messageInput.value.trim()
                     };
@@ -1435,8 +1417,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Generate WhatsApp redirect message for Enquiry
                     let messageText = `Hello MX Herbal,\n\nI have an enquiry about your products. Here are my details:\n\n`;
                     messageText += `Name: ${enquiryData.name}\n`;
-                    messageText += `Email: ${enquiryData.email}\n`;
-                    messageText += `Phone: ${enquiryData.phone}\n\n`;
+                    if (enquiryData.email) {
+                        messageText += `Email: ${enquiryData.email}\n`;
+                    }
+                    messageText += `WhatsApp: ${enquiryData.phone}\n\n`;
                     
                     const interestSelect = document.getElementById('order-interest');
                     const interestText = interestSelect ? interestSelect.options[interestSelect.selectedIndex].text : '';
