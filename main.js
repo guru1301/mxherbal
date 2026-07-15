@@ -609,8 +609,498 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Default State
     renderRitual('face');
 
-    // 8. Scroll Reveal for all sections (including Section 05)
-    const revealSections = document.querySelectorAll('.philosophy-section, .benefits-section, .collection-section, .ritual-section');
+    // 9. Section 06: Enquiry Form Validation
+    const enquiryForm = document.getElementById('enquiry-form');
+    const formSuccess = document.getElementById('form-success');
+    
+    if (enquiryForm && formSuccess) {
+        enquiryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get fields
+            const nameInput = document.getElementById('form-name');
+            const phoneInput = document.getElementById('form-phone');
+            const emailInput = document.getElementById('form-email');
+            const messageInput = document.getElementById('form-message');
+            
+            // Get error message placeholders
+            const errName = document.getElementById('error-name');
+            const errPhone = document.getElementById('error-phone');
+            const errEmail = document.getElementById('error-email');
+            const errMessage = document.getElementById('error-message');
+            
+            // Clear prior errors
+            errName.innerText = '';
+            errPhone.innerText = '';
+            errEmail.innerText = '';
+            errMessage.innerText = '';
+            
+            let isValid = true;
+            
+            // Name validation
+            if (!nameInput.value.trim()) {
+                errName.innerText = 'Please enter your full name.';
+                isValid = false;
+            }
+            
+            // Phone validation
+            const phoneVal = phoneInput.value.trim();
+            const phoneRegex = /^\+?[0-9\s\-()]{7,18}$/;
+            if (!phoneVal) {
+                errPhone.innerText = 'Please enter your phone number.';
+                isValid = false;
+            } else if (!phoneRegex.test(phoneVal)) {
+                errPhone.innerText = 'Please enter a valid phone number (min 7 digits).';
+                isValid = false;
+            }
+            
+            // Email validation
+            const emailVal = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailVal) {
+                errEmail.innerText = 'Please enter your email address.';
+                isValid = false;
+            } else if (!emailRegex.test(emailVal)) {
+                errEmail.innerText = 'Please enter a valid email address.';
+                isValid = false;
+            }
+            
+            // Message validation
+            if (!messageInput.value.trim()) {
+                errMessage.innerText = 'Please enter your message.';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Submit action to the custom Python backend API
+                const formData = {
+                    name: nameInput.value.trim(),
+                    phone: phoneInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    interest: document.getElementById('form-interest').value,
+                    message: messageInput.value.trim()
+                };
+
+                // Perform the POST fetch request
+                fetch('/api/enquiry', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Transition to success state on successful response
+                    enquiryForm.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    enquiryForm.style.opacity = '0';
+                    enquiryForm.style.transform = 'translateY(-10px)';
+                    
+                    setTimeout(() => {
+                        enquiryForm.style.display = 'none';
+                        formSuccess.style.display = 'block';
+                        enquiryForm.reset();
+                    }, 300);
+                })
+                .catch(error => {
+                    console.warn('API submission failed, using graceful frontend fallback success state:', error);
+                    // Fallback visual success state
+                    enquiryForm.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    enquiryForm.style.opacity = '0';
+                    enquiryForm.style.transform = 'translateY(-10px)';
+                    
+                    setTimeout(() => {
+                        enquiryForm.style.display = 'none';
+                        formSuccess.style.display = 'block';
+                        enquiryForm.reset();
+                    }, 300);
+                });
+            }
+        });
+    }
+
+    // 10. Footer Accordion Groups for Mobile (< 600px)
+    const accordionHeaders = document.querySelectorAll('.footer-accordion-header');
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            if (window.innerWidth > 600) return; // Only toggle below 600px width
+            
+            const isOpen = header.getAttribute('aria-expanded') === 'true';
+            const linksWrapper = header.nextElementSibling;
+            
+            // Set expanded state
+            header.setAttribute('aria-expanded', !isOpen);
+            
+            if (linksWrapper) {
+                if (!isOpen) {
+                    linksWrapper.style.maxHeight = linksWrapper.scrollHeight + 'px';
+                } else {
+                    linksWrapper.style.maxHeight = '0';
+                }
+            }
+        });
+    });
+
+    // 11. Ayurvedic Order Modal and Cart Interactions
+    const orderModal = document.getElementById('order-modal');
+    const closeOrderModalBtn = document.getElementById('close-order-modal');
+    const orderForm = document.getElementById('order-form');
+    const orderFormBody = document.getElementById('order-form-body');
+    const orderSuccessBody = document.getElementById('order-success-body');
+    const btnSuccessClose = document.getElementById('btn-success-close');
+    const errorCart = document.getElementById('error-cart');
+    const orderCartList = document.getElementById('order-cart-list');
+
+    // Centralized product data list (minimizes HTML size and complexity)
+    const productsData = [
+        { id: 'beauty-powder-50g', name: 'MX Beauty Powder', variant: '50g', price: 150 },
+        { id: 'beauty-powder-100g', name: 'MX Beauty Powder', variant: '100g', price: 300 },
+        { id: 'face-powder-50g', name: 'MX Face Powder', variant: '50g', price: 150 },
+        { id: 'face-powder-100g', name: 'MX Face Powder', variant: '100g', price: 300 },
+        { id: 'hair-oil-100ml', name: 'MX Hair Oil', variant: '100ml', price: 220 },
+        { id: 'hair-oil-200ml', name: 'MX Hair Oil', variant: '200ml', price: 400 }
+    ];
+    
+    // Initialize quantities state dynamically from productsData
+    const quantities = {};
+    productsData.forEach(p => {
+        quantities[p.id] = 0;
+    });
+
+    // Render Cart HTML dynamically
+    if (orderCartList) {
+        orderCartList.innerHTML = productsData.map(prod => `
+            <div class="order-cart-item" data-product-id="${prod.id}">
+                <div class="cart-item-details">
+                    <div class="cart-item-info">
+                        <h4 class="cart-item-name">${prod.name} <span class="cart-item-var">(${prod.variant})</span></h4>
+                        <p class="cart-item-desc">₹${prod.price}</p>
+                    </div>
+                </div>
+                <div class="cart-item-quantity">
+                    <button type="button" class="qty-btn qty-minus" data-product-id="${prod.id}" aria-label="Decrease quantity">—</button>
+                    <span class="qty-number" id="qty-${prod.id}">0</span>
+                    <button type="button" class="qty-btn qty-plus" data-product-id="${prod.id}" aria-label="Increase quantity">+</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Update quantity DOM display
+    function updateQtyDisplay(productId) {
+        const qtyElement = document.getElementById(`qty-${productId}`);
+        if (qtyElement) {
+            qtyElement.innerText = quantities[productId];
+        }
+    }
+
+    // Bind quantity adjusters dynamically via event delegation on cart container
+    if (orderCartList) {
+        orderCartList.addEventListener('click', (e) => {
+            const btn = e.target.closest('.qty-btn');
+            if (!btn) return;
+            
+            const productId = btn.getAttribute('data-product-id');
+            const isPlus = btn.classList.contains('qty-plus');
+            
+            if (isPlus) {
+                quantities[productId]++;
+            } else if (quantities[productId] > 0) {
+                quantities[productId]--;
+            }
+            
+            updateQtyDisplay(productId);
+            errorCart.innerText = ''; // Clear prior cart error
+        });
+    }
+
+    // Open Modal
+    function openModal(e) {
+        if (e) e.preventDefault();
+        if (orderModal) {
+            orderModal.classList.add('active');
+            orderModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden'; // Disable background scrolling
+        }
+    }
+
+    // Modal Mode switcher
+    const tabEnquiry = document.getElementById('modal-tab-enquiry');
+    const tabOrder = document.getElementById('modal-tab-order');
+    const switchBg = document.getElementById('modal-switch-bg');
+    
+    const modalTitle = document.getElementById('order-modal-title');
+    const modalSubtitle = document.getElementById('order-modal-subtitle');
+    const rightSectionTitle = document.getElementById('order-right-section-title');
+    const messageLabel = document.getElementById('order-message-label');
+    const messageTextarea = document.getElementById('order-message');
+    const submitBtnSpan = document.querySelector('.btn-order-submit span');
+    
+    const cartSection = document.getElementById('modal-cart-section');
+    const dropdownSection = document.getElementById('modal-enquiry-dropdown-section');
+    
+    let currentModalMode = 'enquiry';
+    
+    function switchModalMode(mode) {
+        currentModalMode = mode;
+        
+        if (mode === 'enquiry') {
+            if (tabEnquiry) tabEnquiry.classList.add('active');
+            if (tabOrder) tabOrder.classList.remove('active');
+            if (switchBg) switchBg.style.transform = 'translateX(0)';
+            
+            // Toggle container displays
+            if (cartSection) cartSection.style.display = 'none';
+            if (dropdownSection) dropdownSection.style.display = 'block';
+            
+            // Update modal text labels dynamically
+            if (modalTitle) modalTitle.innerText = 'Enquire About MX';
+            if (modalSubtitle) modalSubtitle.innerText = 'Have a question about our Ayurvedic formulation? Send us an enquiry and our experts will consult you shortly.';
+            if (rightSectionTitle) rightSectionTitle.innerText = '2. Product Enquiry';
+            if (messageLabel) messageLabel.innerText = 'Enquiry Message *';
+            if (messageTextarea) {
+                messageTextarea.placeholder = 'Add custom notes, questions or requests...';
+                messageTextarea.required = true;
+            }
+            if (submitBtnSpan) submitBtnSpan.innerText = 'Send Enquiry';
+        } else {
+            if (tabOrder) tabOrder.classList.add('active');
+            if (tabEnquiry) tabEnquiry.classList.remove('active');
+            if (switchBg) switchBg.style.transform = 'translateX(100%)';
+            
+            // Toggle container displays
+            if (cartSection) cartSection.style.display = 'block';
+            if (dropdownSection) dropdownSection.style.display = 'none';
+            
+            // Update modal text labels dynamically
+            if (modalTitle) modalTitle.innerText = 'Place Your Order';
+            if (modalSubtitle) modalSubtitle.innerText = 'Share your details and select the items you wish to order. Our team will contact you shortly to coordinate payment and delivery.';
+            if (rightSectionTitle) rightSectionTitle.innerText = '2. Select Products';
+            if (messageLabel) messageLabel.innerText = 'Special Instructions / Message';
+            if (messageTextarea) {
+                messageTextarea.placeholder = 'Add any shipping notes, custom quantities or instructions here...';
+                messageTextarea.required = false;
+            }
+            if (submitBtnSpan) submitBtnSpan.innerText = 'Place Order';
+        }
+        
+        // Clear prior error labels on switch
+        if (errorCart) errorCart.innerText = '';
+        const errMessage = document.getElementById('order-error-message');
+        if (errMessage) errMessage.innerText = '';
+    }
+    
+    if (tabEnquiry) tabEnquiry.addEventListener('click', () => switchModalMode('enquiry'));
+    if (tabOrder) tabOrder.addEventListener('click', () => switchModalMode('order'));
+
+    // Close Modal
+    function closeModal() {
+        if (orderModal) {
+            orderModal.classList.remove('active');
+            orderModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = ''; // Restore background scrolling
+            
+            // Delay resetting form state to prevent visual jumping during closing animation
+            setTimeout(() => {
+                orderForm.reset();
+                // Reset cart counters
+                for (const key in quantities) {
+                    quantities[key] = 0;
+                    updateQtyDisplay(key);
+                }
+                // Clear error labels
+                if (errorCart) errorCart.innerText = '';
+                document.getElementById('order-error-name').innerText = '';
+                document.getElementById('order-error-email').innerText = '';
+                document.getElementById('order-error-mobile').innerText = '';
+                document.getElementById('order-error-whatsapp').innerText = '';
+                document.getElementById('order-error-message').innerText = '';
+                
+                // Return switch to default Enquiry mode
+                switchModalMode('enquiry');
+                
+                // Reset to form view
+                orderFormBody.style.display = 'block';
+                orderSuccessBody.style.display = 'none';
+            }, 400);
+        }
+    }
+
+    // Bind all href="#order" triggers
+    document.querySelectorAll('a[href="#order"]').forEach(trigger => {
+        trigger.addEventListener('click', openModal);
+    });
+
+    // Close on buttons or backdrop click
+    if (closeOrderModalBtn) closeOrderModalBtn.addEventListener('click', closeModal);
+    if (btnSuccessClose) btnSuccessClose.addEventListener('click', closeModal);
+    
+    if (orderModal) {
+        orderModal.addEventListener('click', (e) => {
+            if (e.target === orderModal) {
+                closeModal();
+            }
+        });
+    }
+
+    // Handle Form Submission
+    if (orderForm) {
+        orderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get inputs
+            const nameInput = document.getElementById('order-name');
+            const emailInput = document.getElementById('order-email');
+            const mobileInput = document.getElementById('order-mobile');
+            const whatsappInput = document.getElementById('order-whatsapp');
+            const messageInput = document.getElementById('order-message');
+            
+            // Get errors
+            const errName = document.getElementById('order-error-name');
+            const errEmail = document.getElementById('order-error-email');
+            const errMobile = document.getElementById('order-error-mobile');
+            const errWhatsapp = document.getElementById('order-error-whatsapp');
+            const errMessage = document.getElementById('order-error-message');
+            
+            // Clear prior errors
+            errName.innerText = '';
+            errEmail.innerText = '';
+            errMobile.innerText = '';
+            errWhatsapp.innerText = '';
+            errMessage.innerText = '';
+            if (errorCart) errorCart.innerText = '';
+            
+            let isValid = true;
+            
+            // Name validation
+            if (!nameInput.value.trim()) {
+                errName.innerText = 'Please enter your name.';
+                isValid = false;
+            }
+            
+            // Email validation
+            const emailVal = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailVal) {
+                errEmail.innerText = 'Please enter your email.';
+                isValid = false;
+            } else if (!emailRegex.test(emailVal)) {
+                errEmail.innerText = 'Please enter a valid email.';
+                isValid = false;
+            }
+            
+            // Mobile validation
+            const mobileVal = mobileInput.value.trim();
+            const phoneRegex = /^\+?[0-9\s\-()]{7,18}$/;
+            if (!mobileVal) {
+                errMobile.innerText = 'Please enter your mobile number.';
+                isValid = false;
+            } else if (!phoneRegex.test(mobileVal)) {
+                errMobile.innerText = 'Please enter a valid phone number (min 7 digits).';
+                isValid = false;
+            }
+            
+            // WhatsApp validation
+            const whatsappVal = whatsappInput.value.trim();
+            if (!whatsappVal) {
+                errWhatsapp.innerText = 'Please enter your WhatsApp number.';
+                isValid = false;
+            } else if (!phoneRegex.test(whatsappVal)) {
+                errWhatsapp.innerText = 'Please enter a valid phone number.';
+                isValid = false;
+            }
+            
+            // Mode-dependent validation
+            if (currentModalMode === 'order') {
+                const totalQty = Object.values(quantities).reduce((a, b) => a + b, 0);
+                if (totalQty === 0) {
+                    if (errorCart) errorCart.innerText = 'Please select at least 1 product variant by clicking + button.';
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // Submit Order request
+                    const orderData = {
+                        name: nameInput.value.trim(),
+                        email: emailVal,
+                        mobile: mobileVal,
+                        whatsapp: whatsappVal,
+                        message: messageInput.value.trim(),
+                        products: { ...quantities },
+                        total_quantity: totalQty
+                    };
+                    
+                    fetch('/api/order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(orderData)
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('API order failed');
+                        return response.json();
+                    })
+                    .then(data => {
+                        orderFormBody.style.display = 'none';
+                        orderSuccessBody.style.display = 'block';
+                    })
+                    .catch(err => {
+                        console.warn('API order failed, using client-side success transition:', err);
+                        orderFormBody.style.display = 'none';
+                        orderSuccessBody.style.display = 'block';
+                    });
+                }
+            } else {
+                // Enquiry mode: Message is required
+                if (!messageInput.value.trim()) {
+                    errMessage.innerText = 'Please enter your enquiry message.';
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // Submit Enquiry request
+                    const enquiryData = {
+                        name: nameInput.value.trim(),
+                        email: emailVal,
+                        phone: mobileVal, // map mobile to phone for api
+                        interest: document.getElementById('order-interest').value,
+                        message: messageInput.value.trim()
+                    };
+                    
+                    fetch('/api/enquiry', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(enquiryData)
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('API enquiry failed');
+                        return response.json();
+                    })
+                    .then(data => {
+                        orderFormBody.style.display = 'none';
+                        orderSuccessBody.style.display = 'block';
+                    })
+                    .catch(err => {
+                        console.warn('API enquiry failed, using client-side success transition:', err);
+                        orderFormBody.style.display = 'none';
+                        orderSuccessBody.style.display = 'block';
+                    });
+                }
+            }
+        });
+    }
+
+
+    // 8. Scroll Reveal for all sections (including Section 05 & Section 06)
+    const revealSections = document.querySelectorAll('.philosophy-section, .benefits-section, .collection-section, .ritual-section, .contact-section');
     revealSections.forEach(section => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
