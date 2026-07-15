@@ -823,6 +823,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     message: messageInput.value.trim()
                 };
 
+                // Generate WhatsApp redirect message
+                let messageText = `Hello MX Herbal,\n\nI have an enquiry about your products. Here are my details:\n\n`;
+                messageText += `Name: ${formData.name}\n`;
+                messageText += `Email: ${formData.email}\n`;
+                messageText += `Phone: ${formData.phone}\n\n`;
+                
+                const interestSelect = document.getElementById('form-interest');
+                const interestText = interestSelect ? interestSelect.options[interestSelect.selectedIndex].text : '';
+                messageText += `Product of Interest: ${interestText}\n\n`;
+                messageText += `Message:\n${formData.message}\n`;
+
+                const whatsappUrl = `https://wa.me/917806845469?text=${encodeURIComponent(messageText)}`;
+
+                const performRedirect = () => {
+                    window.location.href = whatsappUrl;
+                };
+
                 // Perform the POST fetch request
                 fetch('/api/enquiry', {
                     method: 'POST',
@@ -847,6 +864,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         enquiryForm.style.display = 'none';
                         formSuccess.style.display = 'block';
                         enquiryForm.reset();
+                        performRedirect();
                     }, 300);
                 })
                 .catch(error => {
@@ -860,6 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         enquiryForm.style.display = 'none';
                         formSuccess.style.display = 'block';
                         enquiryForm.reset();
+                        performRedirect();
                     }, 300);
                 });
             }
@@ -1336,6 +1355,42 @@ document.addEventListener('DOMContentLoaded', () => {
                         total_quantity: totalQty
                     };
                     
+                    // Generate WhatsApp redirect message for Order
+                    let messageText = `Hello MX Herbal,\n\nI would like to place an order. Here are my details:\n\n`;
+                    messageText += `Name: ${orderData.name}\n`;
+                    messageText += `Email: ${orderData.email}\n`;
+                    messageText += `Mobile: ${orderData.mobile}\n`;
+                    messageText += `WhatsApp: ${orderData.whatsapp}\n\n`;
+                    messageText += `Products Ordered:\n`;
+
+                    productsData.forEach(p => {
+                        let qty = 0;
+                        for (const varName in quantities[p.id]) {
+                            qty += quantities[p.id][varName];
+                        }
+                        if (qty > 0) {
+                            messageText += `- ${p.name}:\n`;
+                            for (const varName in quantities[p.id]) {
+                                const vQty = quantities[p.id][varName];
+                                if (vQty > 0) {
+                                    const variantObj = p.variants.find(v => v.name === varName);
+                                    const priceText = variantObj ? ` (₹${variantObj.price} each)` : '';
+                                    messageText += `  * ${varName} Variant: ${vQty} unit(s)${priceText}\n`;
+                                }
+                            }
+                        }
+                    });
+
+                    if (orderData.message) {
+                        messageText += `\nSpecial Instructions:\n${orderData.message}\n`;
+                    }
+
+                    const whatsappUrl = `https://wa.me/917806845469?text=${encodeURIComponent(messageText)}`;
+
+                    const performRedirect = () => {
+                        window.location.href = whatsappUrl;
+                    };
+
                     fetch('/api/order', {
                         method: 'POST',
                         headers: {
@@ -1350,11 +1405,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(data => {
                         orderFormBody.style.display = 'none';
                         orderSuccessBody.style.display = 'block';
+                        performRedirect();
                     })
                     .catch(err => {
                         console.warn('API order failed, using client-side success transition:', err);
                         orderFormBody.style.display = 'none';
                         orderSuccessBody.style.display = 'block';
+                        performRedirect();
                     });
                 }
             } else {
@@ -1375,6 +1432,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         message: messageInput.value.trim()
                     };
                     
+                    // Generate WhatsApp redirect message for Enquiry
+                    let messageText = `Hello MX Herbal,\n\nI have an enquiry about your products. Here are my details:\n\n`;
+                    messageText += `Name: ${enquiryData.name}\n`;
+                    messageText += `Email: ${enquiryData.email}\n`;
+                    messageText += `Phone: ${enquiryData.phone}\n\n`;
+                    
+                    const interestSelect = document.getElementById('order-interest');
+                    const interestText = interestSelect ? interestSelect.options[interestSelect.selectedIndex].text : '';
+                    messageText += `Product of Interest: ${interestText}\n\n`;
+                    messageText += `Message:\n${enquiryData.message}\n`;
+
+                    const whatsappUrl = `https://wa.me/917806845469?text=${encodeURIComponent(messageText)}`;
+
+                    const performRedirect = () => {
+                        window.location.href = whatsappUrl;
+                    };
+
                     fetch('/api/enquiry', {
                         method: 'POST',
                         headers: {
@@ -1389,11 +1463,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(data => {
                         orderFormBody.style.display = 'none';
                         orderSuccessBody.style.display = 'block';
+                        performRedirect();
                     })
                     .catch(err => {
                         console.warn('API enquiry failed, using client-side success transition:', err);
                         orderFormBody.style.display = 'none';
                         orderSuccessBody.style.display = 'block';
+                        performRedirect();
                     });
                 }
             }
