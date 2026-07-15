@@ -899,196 +899,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const orderCartList = document.getElementById('order-cart-list');
 
     // Centralized product data list (minimizes HTML size and complexity)
+    // Centralized product data list (minimizes HTML size and complexity)
     const productsData = [
-        {
-            id: 'beauty-powder',
-            name: 'MX Beauty Powder',
-            variants: [
-                { name: '50g', price: 150 },
-                { name: '100g', price: 300 }
-            ],
-            selectedVariant: '50g'
-        },
-        {
-            id: 'face-powder',
-            name: 'MX Face Powder',
-            variants: [
-                { name: '50g', price: 150 },
-                { name: '100g', price: 300 }
-            ],
-            selectedVariant: '50g'
-        },
-        {
-            id: 'hair-oil',
-            name: 'MX Hair Oil',
-            variants: [
-                { name: '100ml', price: 220 },
-                { name: '200ml', price: 400 }
-            ],
-            selectedVariant: '100ml'
-        }
+        { id: 'beauty-powder-50g', name: 'MX Beauty Powder', variant: '50g', price: 150 },
+        { id: 'beauty-powder-100g', name: 'MX Beauty Powder', variant: '100g', price: 300 },
+        { id: 'face-powder-50g', name: 'MX Face Powder', variant: '50g', price: 150 },
+        { id: 'face-powder-100g', name: 'MX Face Powder', variant: '100g', price: 300 },
+        { id: 'hair-oil-100ml', name: 'MX Hair Oil', variant: '100ml', price: 220 },
+        { id: 'hair-oil-200ml', name: 'MX Hair Oil', variant: '200ml', price: 400 }
     ];
     
     // Initialize quantities state dynamically from productsData
-    const quantities = {
-        'beauty-powder': { '50g': 0, '100g': 0 },
-        'face-powder': { '50g': 0, '100g': 0 },
-        'hair-oil': { '100ml': 0, '200ml': 0 }
-    };
+    const quantities = {};
+    productsData.forEach(p => {
+        quantities[p.id] = 0;
+    });
 
-    // Render Cart HTML dynamically with accordion drawers
+    // Render Cart HTML dynamically as a flat list of variants
     if (orderCartList) {
-        orderCartList.innerHTML = productsData.map(prod => {
-            const minPrice = prod.variants[0].price;
-            const maxPrice = prod.variants[prod.variants.length - 1].price;
-            return `
-                <div class="cart-product-card" id="card-${prod.id}" data-product-id="${prod.id}">
-                    <div class="cart-product-header">
-                        <div class="cart-product-info">
-                            <h4 class="cart-product-title">${prod.name}</h4>
-                            <p class="cart-product-price-range">₹${minPrice} - ₹${maxPrice}</p>
-                            <span class="cart-product-summary" id="summary-${prod.id}">No items added</span>
-                        </div>
-                        <button type="button" class="btn-cart-toggle" data-product-id="${prod.id}">
-                            <span>+ ADD</span>
-                        </button>
-                    </div>
-                    <div class="cart-product-drawer" id="drawer-${prod.id}">
-                        <div class="drawer-divider"></div>
-                        <div class="drawer-variants-list">
-                            ${prod.variants.map(v => `
-                                <div class="drawer-variant-row">
-                                    <div class="variant-details">
-                                        <span class="variant-name">${v.name} Variant</span>
-                                        <span class="variant-price">₹${v.price}</span>
-                                    </div>
-                                    <div class="variant-counter">
-                                        <button type="button" class="var-qty-btn var-qty-minus" data-product-id="${prod.id}" data-variant="${v.name}" aria-label="Decrease quantity">—</button>
-                                        <span class="var-qty-val" id="qty-${prod.id}-${v.name}">0</span>
-                                        <button type="button" class="var-qty-btn var-qty-plus" data-product-id="${prod.id}" data-variant="${v.name}" aria-label="Increase quantity">+</button>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
+        orderCartList.innerHTML = productsData.map(prod => `
+            <div class="order-cart-item" data-product-id="${prod.id}">
+                <div class="cart-item-details">
+                    <div class="cart-item-info">
+                        <h4 class="cart-item-name">${prod.name} <span class="cart-item-var">(${prod.variant})</span></h4>
+                        <p class="cart-item-desc">₹${prod.price}</p>
                     </div>
                 </div>
-            `;
-        }).join('');
+                <div class="cart-item-quantity">
+                    <button type="button" class="qty-btn qty-minus" data-product-id="${prod.id}" aria-label="Decrease quantity">—</button>
+                    <span class="qty-number" id="qty-${prod.id}">0</span>
+                    <button type="button" class="qty-btn qty-plus" data-product-id="${prod.id}" aria-label="Increase quantity">+</button>
+                </div>
+            </div>
+        `).join('');
     }
 
-    // Update product card summary, counts, and toggle button text
-    function updateProductCardState(productId) {
-        const product = productsData.find(p => p.id === productId);
-        if (!product) return;
-        
-        const summaryEl = document.getElementById(`summary-${productId}`);
-        const toggleBtn = document.querySelector(`#card-${productId} .btn-cart-toggle`);
-        
-        let totalCount = 0;
-        const details = [];
-        
-        product.variants.forEach(v => {
-            const qty = quantities[productId][v.name];
-            // Update counter DOM
-            const qtyValEl = document.getElementById(`qty-${productId}-${v.name}`);
-            if (qtyValEl) {
-                qtyValEl.innerText = qty;
-            }
-            
-            if (qty > 0) {
-                totalCount += qty;
-                details.push(`${qty} x ${v.name}`);
-            }
-        });
-        
-        // Update summary description
-        if (summaryEl) {
-            if (totalCount > 0) {
-                summaryEl.innerText = details.join(', ') + ' added';
-                summaryEl.style.color = '#C6A15B';
-            } else {
-                summaryEl.innerText = 'No items added';
-                summaryEl.style.color = '';
-            }
+    // Update quantity DOM display based on selected variant
+    function updateQtyDisplay(productId) {
+        const qtyElement = document.getElementById(`qty-${productId}`);
+        if (qtyElement) {
+            qtyElement.innerText = quantities[productId];
         }
-        
-        // Update toggle button text and style
-        if (toggleBtn) {
-            const btnText = toggleBtn.querySelector('span');
-            const drawer = document.getElementById(`drawer-${productId}`);
-            const isExpanded = drawer && drawer.style.maxHeight && drawer.style.maxHeight !== '0px';
-            
-            if (isExpanded) {
-                if (btnText) btnText.innerText = 'DONE';
-                toggleBtn.className = 'btn-cart-toggle active';
-            } else {
-                if (totalCount > 0) {
-                    if (btnText) btnText.innerText = `EDIT (${totalCount})`;
-                    toggleBtn.className = 'btn-cart-toggle has-items';
-                } else {
-                    if (btnText) btnText.innerText = '+ ADD';
-                    toggleBtn.className = 'btn-cart-toggle';
-                }
-            }
-        }
-    }
-
-    // Toggle drawer slider
-    function toggleProductDrawer(productId) {
-        const drawer = document.getElementById(`drawer-${productId}`);
-        const card = document.getElementById(`card-${productId}`);
-        if (!drawer) return;
-        
-        const isExpanded = drawer.style.maxHeight && drawer.style.maxHeight !== '0px';
-        
-        // Collapse all drawers first to maintain a clean layout
-        document.querySelectorAll('.cart-product-drawer').forEach(d => {
-            d.style.maxHeight = '0px';
-        });
-        document.querySelectorAll('.cart-product-card').forEach(c => {
-            c.classList.remove('active');
-        });
-        
-        if (!isExpanded) {
-            // Slide open this drawer
-            drawer.style.maxHeight = drawer.scrollHeight + 'px';
-            if (card) card.classList.add('active');
-        }
-        
-        // Re-sync all state summaries
-        productsData.forEach(p => {
-            updateProductCardState(p.id);
-        });
     }
 
     // Bind quantity adjusters dynamically via event delegation on cart container
     if (orderCartList) {
         orderCartList.addEventListener('click', (e) => {
-            // Case 1: Click toggle button (+ ADD / EDIT / DONE)
-            const toggleBtn = e.target.closest('.btn-cart-toggle');
-            if (toggleBtn) {
-                const card = toggleBtn.closest('.cart-product-card');
-                if (card) {
-                    const productId = card.getAttribute('data-product-id');
-                    toggleProductDrawer(productId);
-                }
-                return;
-            }
-            
-            // Case 2: Click var-qty-plus or var-qty-minus
-            const qtyBtn = e.target.closest('.var-qty-btn');
+            const qtyBtn = e.target.closest('.qty-btn');
             if (qtyBtn) {
                 const productId = qtyBtn.getAttribute('data-product-id');
-                const variantName = qtyBtn.getAttribute('data-variant');
-                const isPlus = qtyBtn.classList.contains('var-qty-plus');
+                const isPlus = qtyBtn.classList.contains('qty-plus');
                 
                 if (isPlus) {
-                    quantities[productId][variantName]++;
-                } else if (quantities[productId][variantName] > 0) {
-                    quantities[productId][variantName]--;
+                    quantities[productId]++;
+                } else if (quantities[productId] > 0) {
+                    quantities[productId]--;
                 }
                 
-                updateProductCardState(productId);
+                updateQtyDisplay(productId);
                 if (errorCart) errorCart.innerText = ''; // Clear prior cart error
             }
         });
@@ -1195,18 +1063,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 orderForm.reset();
                 // Reset cart counters
                 for (const prodId in quantities) {
-                    for (const varName in quantities[prodId]) {
-                        quantities[prodId][varName] = 0;
-                    }
-                    updateProductCardState(prodId);
+                    quantities[prodId] = 0;
+                    updateQtyDisplay(prodId);
                 }
-                // Collapse all drawers and remove active highlights
-                document.querySelectorAll('.cart-product-drawer').forEach(d => {
-                    d.style.maxHeight = '0px';
-                });
-                document.querySelectorAll('.cart-product-card').forEach(c => {
-                    c.classList.remove('active');
-                });
                 // Clear error labels
                 if (errorCart) errorCart.innerText = '';
                 document.getElementById('order-error-name').innerText = '';
@@ -1312,13 +1171,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Mode-dependent validation
             if (currentModalMode === 'order') {
                 let totalQty = 0;
-                for (const prodId in quantities) {
-                    for (const varName in quantities[prodId]) {
-                        totalQty += quantities[prodId][varName];
-                    }
+                for (const key in quantities) {
+                    totalQty += quantities[key];
                 }
                 if (totalQty === 0) {
-                    if (errorCart) errorCart.innerText = 'Please select at least 1 product variant by clicking + button.';
+                    if (errorCart) errorCart.innerText = 'Please select at least 1 product variant.';
                     isValid = false;
                 }
                 
