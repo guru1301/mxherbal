@@ -1252,6 +1252,10 @@ body.loaded .scroll-indicator {
 
 /* Small Tablets / Large Mobiles (900px and below) */
 @media (max-width: 900px) {
+    .nav-container {
+        justify-content: flex-start;
+    }
+
     /* Navbar navigation item hide, show mobile button */
     .nav-menu, .nav-cta {
         display: none;
