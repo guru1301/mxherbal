@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MX Herbal Beauty Powder — Experience the ultimate premium Ayurvedic luxury. Handcrafted botanical blend designed to unveil your natural, radiant aura.">
+    <title>MX Herbal Beauty — Luxury Ayurvedic Skincare</title>
+    
+    <!-- Google Fonts for Luxury Editorial Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css?v=1.5">
+</head>
+<body>
+    <!-- Custom Smooth Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
+
+    <!-- Floating Navigation Header -->
+    <header class="navbar" id="main-nav">
+        <div class="nav-container">
+            <!-- Left Logo -->
+            <a href="#" class="logo-link" aria-label="MX Herbal Beauty Home">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="42" stroke="url(#gold-grad)" stroke-width="1.5" fill="none" stroke-dasharray="8 4" />
+                        <!-- Lotus motif center -->
+                        <path d="M50 25 C47 38 35 45 50 75 C65 45 53 38 50 25 Z" fill="url(#gold-grad)" />
+                        <path d="M50 45 C40 50 32 60 48 75 C45 68 43 58 50 45 Z" fill="url(#gold-grad)" opacity="0.8" />
+                        <path d="M50 45 C60 50 68 60 52 75 C55 68 57 58 50 45 Z" fill="url(#gold-grad)" opacity="0.8" />
+                        <defs>
+                            <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#e2c599" />
+                                <stop offset="100%" stop-color="#bfa37a" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="logo-text">MX</span>
+                </div>
+            </a>
+
+            <!-- Center Menu Links -->
+            <nav class="nav-menu" role="navigation" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#home" class="nav-link active">Home</a></li>
+                    <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="#benefits" class="nav-link">Benefits</a></li>
+                    <li class="nav-item"><a href="#ingredients" class="nav-link">Ingredients</a></li>
+                    <li class="nav-item"><a href="#product" class="nav-link">Product</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Right CTA Button -->
+            <div class="nav-cta">
+                <a href="#order" class="btn-order">Order Now</a>
+            </div>
+
+            <!-- Hamburger Button for Mobile -->
+            <button class="nav-toggle" aria-label="Toggle Navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Menu -->
+    <div class="mobile-drawer" id="mobile-nav" aria-hidden="true">
+        <nav class="mobile-nav-links">
+            <a href="#home" class="mobile-link active">Home</a>
+            <a href="#about" class="mobile-link">About</a>
+            <a href="#benefits" class="mobile-link">Benefits</a>
+            <a href="#ingredients" class="mobile-link">Ingredients</a>
+            <a href="#product" class="mobile-link">Product</a>
+            <a href="#contact" class="mobile-link">Contact</a>
+            <a href="#order" class="mobile-link mobile-cta-link">Order Now</a>
+        </nav>
+    </div>
+
+    <!-- Luxury Hero Section -->
+    <main class="hero-section" id="home">
+        <!-- Interactive Background Layer -->
+        <div class="hero-bg-wrapper">
+            <div class="hero-bg-image" style="background-image: url('assets/hero/background.png');"></div>
+            <!-- Ivory readable gradient overlay (left side 10-15%, right side untouched) -->
+            <div class="hero-overlay"></div>
+            <!-- Gentle lighting shimmer -->
+            <div class="hero-shimmer"></div>
+        </div>
+
+        <!-- Canvas for floating botanical micro-particles -->
+        <div class="hero-particles">
+            <canvas id="particles-canvas"></canvas>
+        </div>
+
+        <!-- Hero Content (Left Align, 42% Column width target) -->
+        <div class="hero-container">
+            <div class="hero-content-wrapper">
+                <div class="hero-content">
+                    <span class="gold-label animate-fade-in-down">HERBAL BEAUTY POWDER</span>
+                    <div class="gold-divider animate-fade-in-down">
+                        <span class="divider-line"></span>
+                        <svg class="divider-lotus" viewBox="0 0 100 100" width="18" height="18">
+                            <path d="M50 20 C45 35 32 42 50 78 C68 42 55 35 50 20 Z" fill="currentColor" />
+                            <path d="M50 48 C37 53 28 62 48 78 C45 70 42 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                            <path d="M50 48 C63 53 72 62 52 78 C55 70 58 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                        </svg>
+                        <span class="divider-line"></span>
+                    </div>
+                    
+                    <!-- Line-by-line reveal container for Cormorant Garamond title -->
+                    <h1 class="main-heading" id="hero-title">
+                        <span class="line-reveal">
+                            <span class="word">You</span> <span class="word">are</span>
+                        </span>
+                        <span class="line-reveal">
+                            <span class="word accent-text">Mahalakshmi</span>
+                        </span>
+                    </h1>
+
+                    <p class="hero-paragraph animate-fade-in-up">
+                        Experience the raw elegance of Ayurvedic botanicals. A meticulously handcrafted blend of sacred herbs, organic flowers, and pure gold essences, curated to awaken your natural inner glow and wrap your skin in timeless radiance.
+                    </p>
+
+                    <div class="hero-actions animate-fade-in-buttons">
+                        <a href="#order" class="btn-primary">
+                            <span class="btn-text">Order Now</span>
+                            <svg class="btn-arrow" viewBox="0 0 24 24" width="18" height="18">
+                                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="btn-shine"></span>
+                        </a>
+                        <a href="#ingredients" class="btn-secondary">
+                            Discover Ingredients 
+                            <svg class="gold-arrow" viewBox="0 0 24 24" width="20" height="20">
+                                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator (Bottom Center) -->
+        <div class="scroll-indicator animate-fade-in-scroll">
+            <div class="scroll-lotus-wrap">
+                <svg class="scroll-lotus" viewBox="0 0 100 100" width="24" height="24">
+                    <path d="M50 20 C45 35 32 42 50 78 C68 42 55 35 50 20 Z" fill="currentColor" />
+                    <path d="M50 48 C37 53 28 62 48 78 C45 70 42 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                    <path d="M50 48 C63 53 72 62 52 78 C55 70 58 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                </svg>
+            </div>
+            <span class="scroll-text">Scroll to Explore</span>
+            <div class="scroll-arrow">
+                <svg viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+    </main>
+
+    <!-- Section 02: Brand Philosophy & Experience -->
+    <section class="philosophy-section" id="about">
+        <!-- Background Layer -->
+        <div class="philosophy-bg-wrapper">
+            <div class="philosophy-bg-image" style="background-image: url('assets/background2.png');"></div>
+            <!-- Ivory readable gradient overlay (left side 10-15%, right side untouched) -->
+            <div class="philosophy-overlay"></div>
+            <!-- Gentle lighting shimmer -->
+            <div class="philosophy-shimmer"></div>
+        </div>
+
+        <!-- Section Content -->
+        <div class="philosophy-container">
+            <!-- 1. Header Block (Centered) -->
+            <div class="philosophy-header reveal-item">
+                <span class="gold-label">THE ESSENCE OF NATURE</span>
+                <div class="gold-divider">
+                    <span class="divider-line"></span>
+                    <svg class="divider-lotus" viewBox="0 0 100 100" width="18" height="18">
+                        <path d="M50 20 C45 35 32 42 50 78 C68 42 55 35 50 20 Z" fill="currentColor" />
+                        <path d="M50 48 C37 53 28 62 48 78 C45 70 42 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                        <path d="M50 48 C63 53 72 62 52 78 C55 70 58 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                    </svg>
+                    <span class="divider-line"></span>
+                </div>
+                <h2 class="philosophy-title">Ancient Wisdom, Timeless Radiance</h2>
+                <p class="philosophy-desc">
+                    Rooted in the purity of Ayurveda, MX Herbal Beauty Powder is a sacred blend crafted to nourish your skin, uplift your spirit, and reveal your natural glow.
+                </p>
+            </div>
+
+            <!-- 2. Features Grid (5 Columns, Compact) -->
+            <div class="features-grid reveal-item">
+                <div class="feature-card">
+                    <div class="feature-card-icon-wrap">
+                        <svg class="feature-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.58 1 9.3a7 7 0 0 1-9 8.7z" />
+                            <path d="M9 22c0-3.5 2.5-6.5 5.5-8.5" />
+                        </svg>
+                    </div>
+                    <h4 class="feature-card-title">Made With Natural Herbs</h4>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon-wrap">
+                        <svg class="feature-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 3h12M9 3v6L4 19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2L15 9V3M9 11h6" />
+                        </svg>
+                    </div>
+                    <h4 class="feature-card-title">Chemical Free</h4>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon-wrap">
+                        <svg class="feature-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 20c0-3 3-5 8-5s8 2 8 5" />
+                            <circle cx="12" cy="10" r="4" />
+                            <path d="M19 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1z" fill="currentColor" stroke="none" />
+                        </svg>
+                    </div>
+                    <h4 class="feature-card-title">Helps In Glowing & Healthy Skin</h4>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon-wrap">
+                        <svg class="feature-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7z" />
+                        </svg>
+                    </div>
+                    <h4 class="feature-card-title">Suitable For All Skin Types</h4>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon-wrap">
+                        <svg class="feature-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            <path d="m9 11 2 2 4-4" />
+                        </svg>
+                    </div>
+                    <h4 class="feature-card-title">Safe & Trusted Quality</h4>
+                </div>
+            </div>
+
+            <!-- 3. Bottom Ingredients Split Layout -->
+            <div class="ingredients-split reveal-item">
+                <!-- Left Narrative Column -->
+                <div class="ingredients-narrative">
+                    <span class="narrative-eyebrow">ROOTED IN NATURE,</span>
+                    <h2 class="narrative-title">Made for You</h2>
+                    <p class="narrative-desc">
+                        A harmonious blend of time-honored herbs and sacred botanicals, carefully selected to bring balance, nourishment and timeless beauty to your skin.
+                    </p>
+                    <a href="#about" class="btn-solid-green">
+                        EXPLORE INGREDIENTS
+                        <svg class="btn-arrow" viewBox="0 0 24 24" width="18" height="18">
+                            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Right Grid of Circular Ingredients -->
+                <div class="ingredients-circle-grid">
+                    <div class="ingredient-circle-item">
+                        <div class="circle-image-wrap">
+                            <img src="assets/ingredients/turmeric.png" alt="Turmeric" class="ingredient-img">
+                        </div>
+                        <span class="ingredient-name">Turmeric</span>
+                    </div>
+                    <div class="ingredient-circle-item">
+                        <div class="circle-image-wrap">
+                            <img src="assets/ingredients/neem.png" alt="Neem" class="ingredient-img">
+                        </div>
+                        <span class="ingredient-name">Neem</span>
+                    </div>
+                    <div class="ingredient-circle-item">
+                        <div class="circle-image-wrap">
+                            <img src="assets/ingredients/hibiscus.png" alt="Hibiscus" class="ingredient-img">
+                        </div>
+                        <span class="ingredient-name">Hibiscus</span>
+                    </div>
+                    <div class="ingredient-circle-item">
+                        <div class="circle-image-wrap">
+                            <img src="assets/ingredients/sandalwood.png" alt="Sandalwood" class="ingredient-img">
+                        </div>
+                        <span class="ingredient-name">Sandalwood</span>
+                    </div>
+                    <div class="ingredient-circle-item">
+                        <div class="circle-image-wrap">
+                            <img src="assets/ingredients/aloe_vera.png" alt="Aloe Vera" class="ingredient-img">
+                        </div>
+                        <span class="ingredient-name">Aloe Vera</span>
+                    </div>
+                    <div class="ingredient-circle-item">
+                        <div class="circle-image-wrap">
+                            <img src="assets/ingredients/rose_petals.png" alt="Rose Petals" class="ingredient-img">
+                        </div>
+                        <span class="ingredient-name">Rose Petals</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 03: Benefits & Why Choose MX -->
+    <section class="benefits-section" id="benefits">
+        <!-- Background Layer -->
+        <div class="benefits-bg-wrapper">
+            <div class="benefits-bg-image" style="background-image: url('assets/background3.png');"></div>
+            <div class="benefits-shimmer"></div>
+            <div class="benefits-overlay"></div>
+        </div>
+
+        <div class="benefits-container">
+
+            <!-- Section Header -->
+            <div class="benefits-header reveal-item">
+                <span class="gold-label">WHY CHOOSE MX</span>
+                <div class="gold-divider">
+                    <span class="divider-line"></span>
+                    <svg class="divider-lotus" viewBox="0 0 100 100" width="18" height="18">
+                        <path d="M50 20 C45 35 32 42 50 78 C68 42 55 35 50 20 Z" fill="currentColor" />
+                        <path d="M50 48 C37 53 28 62 48 78 C45 70 42 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                        <path d="M50 48 C63 53 72 62 52 78 C55 70 58 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                    </svg>
+                    <span class="divider-line"></span>
+                </div>
+                <h2 class="benefits-title">Reveal Your Natural Beauty,<br>One Ritual at a Time</h2>
+                <div class="benefits-intro-wrapper">
+                    <p class="benefits-intro">
+                        Every great skincare ritual begins with consistency. <strong>MX Herbal Beauty Powder</strong> is thoughtfully crafted to become a gentle part of your everyday routine — combining carefully selected botanical ingredients to help your skin look fresh, balanced, and naturally radiant.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Benefits Grid — Premium Editorial -->
+            <div class="benefits-editorial-grid">
+
+                <!-- BENEFIT 01: Natural Glow -->
+                <div class="benefit-item reveal-item">
+                    <div class="benefit-icon-ring">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="benefit-svg">
+                            <circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="1.2"/>
+                            <line x1="24" y1="4" x2="24" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <line x1="24" y1="38" x2="24" y2="44" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <line x1="4" y1="24" x2="10" y2="24" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <line x1="38" y1="24" x2="44" y2="24" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <line x1="9.17" y1="9.17" x2="13.42" y2="13.42" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <line x1="34.58" y1="34.58" x2="38.83" y2="38.83" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <line x1="38.83" y1="9.17" x2="34.58" y2="13.42" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <line x1="13.42" y1="34.58" x2="9.17" y2="38.83" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <circle cx="24" cy="24" r="5" stroke="currentColor" stroke-width="0.6" stroke-dasharray="1.5 2"/>
+                        </svg>
+                    </div>
+                    <span class="benefit-number">01</span>
+                    <h3 class="benefit-title">Natural Glow</h3>
+                    <p class="benefit-desc">Supports skin that appears naturally healthy, luminous, and radiant. Experience a visible freshness that comes from within — sustainably, consistently, beautifully.</p>
+                    <span class="benefit-tag">Radiance · Luminosity</span>
+                </div>
+
+                <!-- BENEFIT 02: Skin Brightness -->
+                <div class="benefit-item reveal-item">
+                    <div class="benefit-icon-ring">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="benefit-svg">
+                            <path d="M24 8 C24 8 14 20 14 28 C14 34.627 18.477 40 24 40 C29.523 40 34 34.627 34 28 C34 20 24 8 24 8 Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                            <path d="M18 30 C18 30 20 26 24 26 C28 26 30 30 30 30" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+                            <path d="M14 28 C10 28 7 25 8 21" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+                            <path d="M34 28 C38 28 41 25 40 21" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+                        </svg>
+                    </div>
+                    <span class="benefit-number">02</span>
+                    <h3 class="benefit-title">Skin Brightness</h3>
+                    <p class="benefit-desc">Helps reduce the appearance of dull, tired-looking skin. With regular ritual use, your complexion appears visibly brighter, more refreshed and more alive.</p>
+                    <span class="benefit-tag">Clarity · Vitality</span>
+                </div>
+
+                <!-- BENEFIT 03: Dark Spots -->
+                <div class="benefit-item reveal-item">
+                    <div class="benefit-icon-ring">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="benefit-svg">
+                            <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="1.2"/>
+                            <circle cx="24" cy="24" r="9" stroke="currentColor" stroke-width="1" stroke-dasharray="2.5 2"/>
+                            <circle cx="24" cy="24" r="3.5" stroke="currentColor" stroke-width="1.2"/>
+                            <path d="M24 8 L24 15" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+                            <path d="M24 33 L24 40" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+                            <path d="M8 24 L15 24" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+                            <path d="M33 24 L40 24" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <span class="benefit-number">03</span>
+                    <h3 class="benefit-title">Reduces Dark Spots</h3>
+                    <p class="benefit-desc">Supports a more even-looking complexion by gently helping minimize the visible appearance of pigmentation and post-blemish marks over time.</p>
+                    <span class="benefit-tag">Evenness · Clarity</span>
+                </div>
+
+                <!-- BENEFIT 04: Blemishes -->
+                <div class="benefit-item reveal-item">
+                    <div class="benefit-icon-ring">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="benefit-svg">
+                            <path d="M24 6 L28.5 16.5 L40 18.18 L31.5 26.46 L33.5 38 L24 32.75 L14.5 38 L16.5 26.46 L8 18.18 L19.5 16.5 Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                            <path d="M19 24 L22.5 27.5 L29.5 20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span class="benefit-number">04</span>
+                    <h3 class="benefit-title">Reduces Blemishes</h3>
+                    <p class="benefit-desc">Designed to complement your skincare routine by supporting skin that appears visibly cleaner, calmer, and healthier-looking day by day.</p>
+                    <span class="benefit-tag">Clarity · Balance</span>
+                </div>
+
+                <!-- BENEFIT 05: Dark Circles -->
+                <div class="benefit-item reveal-item">
+                    <div class="benefit-icon-ring">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="benefit-svg">
+                            <path d="M6 24 C6 24 13 14 24 14 C35 14 42 24 42 24 C42 24 35 34 24 34 C13 34 6 24 6 24 Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                            <circle cx="24" cy="24" r="6" stroke="currentColor" stroke-width="1.2"/>
+                            <circle cx="24" cy="24" r="2.5" fill="currentColor" opacity="0.25"/>
+                            <path d="M16 16 C16 16 13 11 10 9" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+                            <path d="M32 16 C32 16 35 11 38 9" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <span class="benefit-number">05</span>
+                    <h3 class="benefit-title">Reduces Dark Circles</h3>
+                    <p class="benefit-desc">Leaves the delicate under-eye area looking noticeably fresher, more revitalized and rested — a visible transformation with consistent daily care.</p>
+                    <span class="benefit-tag">Freshness · Restoration</span>
+                </div>
+
+                <!-- BENEFIT 06: Even Skin Tone -->
+                <div class="benefit-item reveal-item">
+                    <div class="benefit-icon-ring">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="benefit-svg">
+                            <path d="M8 36 C8 36 13 20 24 14 C35 20 40 36 40 36" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 34 C12 34 16 22 24 18 C32 22 36 34 36 34" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.45"/>
+                            <path d="M16 32 C16 32 19 24 24 22 C29 24 32 32 32 32" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.25"/>
+                            <path d="M10 38 L38 38" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <path d="M24 14 L24 8" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+                            <circle cx="24" cy="6.5" r="1.5" fill="currentColor" opacity="0.6"/>
+                        </svg>
+                    </div>
+                    <span class="benefit-number">06</span>
+                    <h3 class="benefit-title">Even Skin Tone</h3>
+                    <p class="benefit-desc">Regular use helps promote skin that appears smoother, softer, and beautifully balanced. Embrace a complexion that feels harmonious and naturally perfected.</p>
+                    <span class="benefit-tag">Harmony · Smoothness</span>
+                </div>
+
+            </div>
+
+            <!-- Elegant Closing Divider -->
+            <div class="benefits-closing reveal-item">
+                <div class="closing-ornament">
+                    <span class="closing-line"></span>
+                    <svg viewBox="0 0 60 30" width="60" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" class="closing-leaf">
+                        <path d="M30 2 C22 8 10 10 4 18 C12 22 22 18 30 14 C38 18 48 22 56 18 C50 10 38 8 30 2 Z" stroke="currentColor" stroke-width="0.8" fill="currentColor" opacity="0.12"/>
+                        <path d="M30 2 L30 28" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+                    </svg>
+                    <span class="closing-line"></span>
+                </div>
+                <blockquote class="footer-quote">
+                    "Healthy-looking skin isn't created overnight.<br>
+                    It grows through gentle care, consistency, and the timeless goodness of nature."
+                </blockquote>
+                <div class="footer-cta">
+                    <a href="#order" class="btn-primary" id="begin-journey-btn">
+                        <span class="btn-text">Begin Your Herbal Journey</span>
+                        <svg class="btn-arrow" viewBox="0 0 24 24" width="18" height="18">
+                            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="btn-shine"></span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 04: The MX Collection -->
+    <section class="collection-section" id="collection">
+        <!-- Background Layer -->
+        <div class="collection-bg-wrapper">
+            <div class="collection-bg-image" style="background-image: url('assets/background4.png');"></div>
+            <!-- Translucent ivory overlay to soften -->
+            <div class="collection-overlay"></div>
+            <div class="collection-shimmer"></div>
+            <div class="collection-particles">
+                <canvas id="collection-particles-canvas"></canvas>
+            </div>
+        </div>
+
+        <div class="collection-container">
+            <!-- Section Header -->
+            <div class="collection-header reveal-item">
+                <span class="gold-label">OUR COLLECTION</span>
+                <div class="gold-divider">
+                    <span class="divider-line"></span>
+                    <svg class="divider-lotus" viewBox="0 0 100 100" width="18" height="18">
+                        <path d="M50 20 C45 35 32 42 50 78 C68 42 55 35 50 20 Z" fill="currentColor" />
+                        <path d="M50 48 C37 53 28 62 48 78 C45 70 42 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                        <path d="M50 48 C63 53 72 62 52 78 C55 70 58 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                    </svg>
+                    <span class="divider-line"></span>
+                </div>
+                <h2 class="collection-title">Discover the <span class="gold-highlight">MX</span> Collection</h2>
+                <div class="collection-intro-wrapper">
+                    <p class="collection-intro">
+                        Every product is thoughtfully crafted using carefully selected botanical ingredients and traditional herbal wisdom to complement your everyday skincare ritual. Choose the formulation that best fits your lifestyle and daily self-care routine.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="collection-grid">
+                <!-- CARD 01: MX Herbal Beauty Powder -->
+                <div class="product-card reveal-item">
+                    <!-- Product Image Container with Overlap -->
+                    <div class="product-image-container">
+                        <div class="product-spotlight"></div>
+                        <img src="assets/product2.png" alt="MX Herbal Beauty Powder" class="product-image floating-product">
+                    </div>
+                    
+                    <!-- Product Header details -->
+                    <div class="product-card-header">
+                        <span class="product-gender">For Women</span>
+                        <h3 class="product-name">MX Herbal Beauty Powder</h3>
+                    </div>
+
+                    <!-- Short Description -->
+                    <p class="product-description">
+                        A premium herbal beauty powder thoughtfully crafted to become part of your everyday skincare ritual, leaving your skin feeling naturally refreshed, soft and radiant.
+                    </p>
+
+                    <!-- Sizes & Prices Section -->
+                    <div class="product-sizes-section">
+                        <span class="small-section-title">AVAILABLE SIZES</span>
+                        <div class="sizes-row">
+                            <div class="size-capsule">
+                                <svg class="size-capsule-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M6 18V9a6 6 0 0 1 12 0v9" />
+                                    <path d="M3 21h18" />
+                                    <path d="M9 3h6" />
+                                </svg>
+                                <span class="size-weight">50 g</span>
+                                <span class="size-price">₹150</span>
+                            </div>
+                            <div class="size-capsule">
+                                <svg class="size-capsule-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M6 18V9a6 6 0 0 1 12 0v9" />
+                                    <path d="M3 21h18" />
+                                    <path d="M9 3h6" />
+                                </svg>
+                                <span class="size-weight">100 g</span>
+                                <span class="size-price">₹300</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Best For Section -->
+                    <div class="product-bestfor-section">
+                        <span class="small-section-title">BEST FOR</span>
+                        <div class="bestfor-grid">
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42 1.42"/>
+                                </svg>
+                                <span class="bestfor-label">Daily Skincare</span>
+                            </div>
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="m12 3-1.912 5.886H3.879l5.037 3.66L7.004 18.43 12 14.77l4.996 3.66-1.912-5.884 5.037-3.66h-6.209Z"/>
+                                </svg>
+                                <span class="bestfor-label">Natural Glow</span>
+                            </div>
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z"/>
+                                    <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5"/>
+                                </svg>
+                                <span class="bestfor-label">Healthy Skin</span>
+                            </div>
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                                    <path d="M8 12h8"/>
+                                </svg>
+                                <span class="bestfor-label">Gentle Cleansing</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="product-action">
+                        <a href="#order" class="btn-product">
+                            <span class="btn-product-text">Explore Product</span>
+                            <svg class="btn-product-arrow" viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CARD 02: MX Herbal Face Powder -->
+                <div class="product-card reveal-item">
+                    <!-- Badge -->
+                    <span class="product-badge">NEW LAUNCH</span>
+
+                    <!-- Product Image Container with Overlap -->
+                    <div class="product-image-container">
+                        <div class="product-spotlight"></div>
+                        <img src="assets/product1.png" alt="MX Herbal Face Powder" class="product-image floating-product">
+                    </div>
+                    
+                    <!-- Product Header details -->
+                    <div class="product-card-header">
+                        <span class="product-gender">For Men</span>
+                        <h3 class="product-name">MX Herbal Face Powder</h3>
+                    </div>
+
+                    <!-- Short Description -->
+                    <p class="product-description">
+                        Designed for modern men seeking a simple herbal skincare routine that helps refresh the skin after daily exposure to dust, pollution and outdoor activities.
+                    </p>
+
+                    <!-- Sizes & Prices Section -->
+                    <div class="product-sizes-section">
+                        <span class="small-section-title">AVAILABLE SIZES</span>
+                        <div class="sizes-row">
+                            <div class="size-capsule">
+                                <svg class="size-capsule-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M6 18V9a6 6 0 0 1 12 0v9" />
+                                    <path d="M3 21h18" />
+                                    <path d="M9 3h6" />
+                                </svg>
+                                <span class="size-weight">50 g</span>
+                                <span class="size-price">₹150</span>
+                            </div>
+                            <div class="size-capsule">
+                                <svg class="size-capsule-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M6 18V9a6 6 0 0 1 12 0v9" />
+                                    <path d="M3 21h18" />
+                                    <path d="M9 3h6" />
+                                </svg>
+                                <span class="size-weight">100 g</span>
+                                <span class="size-price">₹300</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Best For Section -->
+                    <div class="product-bestfor-section">
+                        <span class="small-section-title">BEST FOR</span>
+                        <div class="bestfor-grid">
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                                    <path d="M12 8v8"/>
+                                </svg>
+                                <span class="bestfor-label">Daily Face Care</span>
+                            </div>
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                </svg>
+                                <span class="bestfor-label">Oil Control</span>
+                            </div>
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M12 3v10M8.5 7.5l7 7M15.5 7.5l-7 7" opacity="0.4" />
+                                    <circle cx="12" cy="12" r="6"/>
+                                </svg>
+                                <span class="bestfor-label">Fresh Look</span>
+                            </div>
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                <span class="bestfor-label">Everyday Use</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="product-action">
+                        <a href="#order" class="btn-product">
+                            <span class="btn-product-text">Explore Product</span>
+                            <svg class="btn-product-arrow" viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CARD 03: MX Herbal Hair Oil -->
+                <div class="product-card reveal-item">
+                    <!-- Badge -->
+                    <span class="product-badge">NOW AVAILABLE</span>
+
+                    <!-- Product Image Container with Overlap -->
+                    <div class="product-image-container">
+                        <div class="product-spotlight"></div>
+                        <img src="assets/product3.png" alt="MX Herbal Hair Oil" class="product-image floating-product">
+                    </div>
+                    
+                    <!-- Product Header details -->
+                    <div class="product-card-header">
+                        <span class="product-gender">For Hair</span>
+                        <h3 class="product-name">MX Herbal Hair Oil</h3>
+                    </div>
+
+                    <!-- Short Description -->
+                    <p class="product-description">
+                        A botanical hair oil inspired by traditional herbal care, formulated to complement your regular hair care routine while leaving hair soft, nourished and manageable.
+                    </p>
+
+                    <!-- Sizes & Prices Section -->
+                    <div class="product-sizes-section">
+                        <span class="small-section-title">AVAILABLE SIZES</span>
+                        <div class="sizes-row">
+                            <div class="size-capsule">
+                                <svg class="size-capsule-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                                    <path d="M12 6v12M6 12h12"/>
+                                </svg>
+                                <span class="size-weight">100 ml</span>
+                                <span class="size-price">₹220</span>
+                            </div>
+                            <div class="size-capsule">
+                                <svg class="size-capsule-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                                    <path d="M12 6v12M6 12h12"/>
+                                </svg>
+                                <span class="size-weight">200 ml</span>
+                                <span class="size-price">₹400</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Best For Section -->
+                    <div class="product-bestfor-section">
+                        <span class="small-section-title">BEST FOR</span>
+                        <div class="bestfor-grid">
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M3 11c0-4.97 4.03-9 9-9s9 4.03 9 9"/>
+                                    <path d="M3 14c0 3 2 5 5 5h8c3 0 5-2 5-5"/>
+                                    <path d="M12 11v8"/>
+                                </svg>
+                                <span class="bestfor-label">Hair Care</span>
+                            </div>
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                </svg>
+                                <span class="bestfor-label">Scalp Nourish</span>
+                            </div>
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 15c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5z"/>
+                                </svg>
+                                <span class="bestfor-label">Soft Hair</span>
+                            </div>
+                            <div class="bestfor-item">
+                                <svg class="bestfor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                                    <path d="M12 2L2 22h20L12 2z"/>
+                                </svg>
+                                <span class="bestfor-label">Herbal Routine</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="product-action">
+                        <a href="#order" class="btn-product">
+                            <span class="btn-product-text">Explore Product</span>
+                            <svg class="btn-product-arrow" viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 05: How to Use — The Herbal Ritual -->
+    <section class="ritual-section" id="ritual">
+        <div class="ritual-bg-wrapper">
+            <div class="ritual-bg-image"></div>
+            <div class="ritual-overlay"></div>
+        </div>
+
+        <div class="ritual-container">
+            <!-- Section Header -->
+            <div class="ritual-header reveal-item">
+                <span class="gold-label">
+                    <svg class="eyebrow-leaf eyebrow-leaf-left" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                        <path d="M12 2C8 6 4 10 4 15c0 4.4 3.6 8 8 8s8-3.6 8-8c0-5-4-9-8-13z" />
+                        <path d="M12 2v21" stroke-dasharray="1.5 1.5" />
+                    </svg>
+                    THE HERBAL RITUAL
+                    <svg class="eyebrow-leaf eyebrow-leaf-right" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                        <path d="M12 2C8 6 4 10 4 15c0 4.4 3.6 8 8 8s8-3.6 8-8c0-5-4-9-8-13z" />
+                        <path d="M12 2v21" stroke-dasharray="1.5 1.5" />
+                    </svg>
+                </span>
+                <div class="gold-divider">
+                    <span class="divider-line"></span>
+                    <svg class="divider-lotus" viewBox="0 0 100 100" width="18" height="18">
+                        <path d="M50 20 C45 35 32 42 50 78 C68 42 55 35 50 20 Z" fill="currentColor" />
+                        <path d="M50 48 C37 53 28 62 48 78 C45 70 42 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                        <path d="M50 48 C63 53 72 62 52 78 C55 70 58 60 50 48 Z" fill="currentColor" opacity="0.7" />
+                    </svg>
+                    <span class="divider-line"></span>
+                </div>
+                <h2 class="ritual-title">How to <span class="gold-highlight">Use</span></h2>
+                <div class="ritual-intro-wrapper">
+                    <p class="ritual-intro-tagline">Simple rituals. Pure ingredients. Natural glow.</p>
+                    <p class="ritual-intro-desc">Follow these easy steps and make it a part of your everyday self-care.</p>
+                </div>
+            </div>
+
+            <!-- Segmented Switch -->
+            <div class="ritual-switch-wrapper reveal-item">
+                <div class="ritual-switch" role="tablist" aria-label="Skincare and Haircare Rituals">
+                    <div class="ritual-switch-bg"></div>
+                    <button class="ritual-switch-btn active" id="tab-face" role="tab" aria-selected="true" aria-controls="ritual-panel" data-ritual="face">
+                        <span class="tab-icon">🌿</span> FACE POWDER RITUAL
+                    </button>
+                    <button class="ritual-switch-btn" id="tab-hair" role="tab" aria-selected="false" aria-controls="ritual-panel" data-ritual="hair">
+                        <span class="tab-icon">💧</span> HAIR OIL RITUAL
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ritual Content Panel (Dynamically populated) -->
+            <div class="ritual-content-panel reveal-item" id="ritual-panel" role="tabpanel" aria-labelledby="tab-face">
+                <div class="ritual-sub-header">
+                    <h3 class="ritual-sub-title" id="ritual-active-title">Herbal Face Powder Ritual</h3>
+                    <p class="ritual-sub-desc" id="ritual-active-subtitle">For fresh, clean & naturally radiant skin</p>
+                </div>
+
+                <!-- Cards Wrapper -->
+                <div class="ritual-cards-container">
+                    <!-- Cards will be dynamically injected here by JavaScript -->
+                </div>
+
+                <!-- Result Strip -->
+                <div class="ritual-result-strip">
+                    <!-- Dynamic Result strip injected by JS -->
+                </div>
+            </div>
+
+            <!-- Bottom Brand Message -->
+            <div class="ritual-closing reveal-item">
+                <p class="closing-quote-top">"Consistency is the heart of every self-care ritual."</p>
+                <p class="closing-quote-italic">Let nature take its time.</p>
+                <div class="closing-ornament">
+                    <span class="closing-line"></span>
+                    <svg viewBox="0 0 60 30" width="60" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" class="closing-leaf">
+                        <path d="M30 2 C22 8 10 10 4 18 C12 22 22 18 30 14 C38 18 48 22 56 18 C50 10 38 8 30 2 Z" stroke="currentColor" stroke-width="0.8" fill="currentColor" opacity="0.12"/>
+                        <path d="M30 2 L30 28" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+                    </svg>
+                    <span class="closing-line"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script File -->
+    <script src="main.js?v=1.5"></script>
+</body>
+</html>
