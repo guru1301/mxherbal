@@ -596,6 +596,7 @@ body.loaded .hero-actions {
     align-items: center;
     overflow: hidden;
     z-index: 4;
+    scroll-margin-top: 110px;
 }
 
 .philosophy-bg-wrapper {
@@ -1173,7 +1174,9 @@ button:hover ~ .custom-cursor-follower,
     align-items: center;
     gap: 8px;
     color: var(--color-charcoal);
-    pointer-events: none;
+    pointer-events: auto;
+    cursor: pointer;
+    text-decoration: none;
     opacity: 0;
     transition: opacity 1.5s cubic-bezier(0.25, 1, 0.3, 1) 1.5s;
 }
