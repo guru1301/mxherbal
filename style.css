@@ -4709,6 +4709,15 @@ a.contact-row-value:hover {
     color: var(--color-cream);
 }
 
+.flag-icon-img {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 2px;
+    object-fit: cover;
+    box-shadow: 0 1px 3px rgba(7, 17, 13, 0.18);
+    flex-shrink: 0;
+}
+
 
 
 

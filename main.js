@@ -3,28 +3,28 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Custom Country Flag Dropdown List
     const countries = [
-        { name: "India", code: "IN", dial: "+91", flag: "🇮🇳" },
-        { name: "United Arab Emirates", code: "AE", dial: "+971", flag: "🇦🇪" },
-        { name: "Saudi Arabia", code: "SA", dial: "+966", flag: "🇸🇦" },
-        { name: "Oman", code: "OM", dial: "+968", flag: "🇴🇲" },
-        { name: "Qatar", code: "QA", dial: "+974", flag: "🇶🇦" },
-        { name: "Kuwait", code: "KW", dial: "+965", flag: "🇰🇼" },
-        { name: "Bahrain", code: "BH", dial: "+973", flag: "🇧🇭" },
-        { name: "United Kingdom", code: "GB", dial: "+44", flag: "🇬🇧" },
-        { name: "United States", code: "US", dial: "+1", flag: "🇺🇸" },
-        { name: "Singapore", code: "SG", dial: "+65", flag: "🇸🇬" },
-        { name: "Malaysia", code: "MY", dial: "+60", flag: "🇲🇾" },
-        { name: "Australia", code: "AU", dial: "+61", flag: "🇦🇺" },
-        { name: "Sri Lanka", code: "LK", dial: "+94", flag: "🇱🇰" },
-        { name: "Nepal", code: "NP", dial: "+977", flag: "🇳🇵" },
-        { name: "Bangladesh", code: "BD", dial: "+880", flag: "🇧🇩" }
+        { name: "India", code: "in", dial: "+91" },
+        { name: "United Arab Emirates", code: "ae", dial: "+971" },
+        { name: "Saudi Arabia", code: "sa", dial: "+966" },
+        { name: "Oman", code: "om", dial: "+968" },
+        { name: "Qatar", code: "qa", dial: "+974" },
+        { name: "Kuwait", code: "kw", dial: "+965" },
+        { name: "Bahrain", code: "bh", dial: "+973" },
+        { name: "United Kingdom", code: "gb", dial: "+44" },
+        { name: "United States", code: "us", dial: "+1" },
+        { name: "Singapore", code: "sg", dial: "+65" },
+        { name: "Malaysia", code: "my", dial: "+60" },
+        { name: "Australia", code: "au", dial: "+61" },
+        { name: "Sri Lanka", code: "lk", dial: "+94" },
+        { name: "Nepal", code: "np", dial: "+977" },
+        { name: "Bangladesh", code: "bd", dial: "+880" }
     ];
 
     document.querySelectorAll('.country-code-selector').forEach(selector => {
         const listContainer = selector.querySelector('.country-list-items');
         const searchInput = selector.querySelector('.country-search-input');
         
-        // Function to render items
+        // Function to render items with CDN image flags
         function renderItems(filter = '') {
             const filtered = countries.filter(c => 
                 c.name.toLowerCase().includes(filter.toLowerCase()) || 
@@ -33,9 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (listContainer) {
                 listContainer.innerHTML = filtered.map(c => `
-                    <div class="country-item" data-dial="${c.dial}" data-flag="${c.flag}">
+                    <div class="country-item" data-dial="${c.dial}" data-code="${c.code}">
                         <div class="country-item-left">
-                            <span class="flag-icon">${c.flag}</span>
+                            <img class="flag-icon-img" src="https://flagcdn.com/20x15/${c.code}.png" width="20" height="15" alt="${c.name}">
                             <span class="country-name">${c.name}</span>
                         </div>
                         <span class="country-dial">${c.dial}</span>
@@ -59,12 +59,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         other.classList.remove('open');
                         const otherList = other.querySelector('.country-dropdown-list');
                         if (otherList) otherList.classList.remove('show');
+                        const otherContainer = other.closest('.phone-input-container');
+                        if (otherContainer) otherContainer.style.zIndex = '';
                     }
                 });
                 
-                selector.classList.toggle('open');
+                const isOpen = selector.classList.toggle('open');
                 const dropList = selector.querySelector('.country-dropdown-list');
-                if (dropList) dropList.classList.toggle('show');
+                if (dropList) {
+                    if (isOpen) {
+                        dropList.classList.add('show');
+                        // Elevate container z-index to resolve stacking context bug
+                        const container = selector.closest('.phone-input-container');
+                        if (container) container.style.zIndex = '100';
+                    } else {
+                        dropList.classList.remove('show');
+                        const container = selector.closest('.phone-input-container');
+                        if (container) container.style.zIndex = '';
+                    }
+                }
                 
                 if (selector.classList.contains('open') && searchInput) {
                     searchInput.focus();
@@ -93,19 +106,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 const item = e.target.closest('.country-item');
                 if (item) {
                     const dial = item.getAttribute('data-dial');
-                    const flag = item.getAttribute('data-flag');
+                    const code = item.getAttribute('data-code');
                     
-                    // Update selected text and flag
+                    // Update selected text and flag image
                     selector.setAttribute('data-dial-code', dial);
-                    const flagIcon = selector.querySelector('.selected-flag .flag-icon');
+                    const flagImg = selector.querySelector('.selected-flag .flag-icon-img');
                     const dialCodeSpan = selector.querySelector('.selected-flag .dial-code');
                     
-                    if (flagIcon) flagIcon.innerText = flag;
+                    if (flagImg) {
+                        flagImg.src = `https://flagcdn.com/20x15/${code}.png`;
+                        flagImg.alt = item.querySelector('.country-name').innerText;
+                    }
                     if (dialCodeSpan) dialCodeSpan.innerText = dial;
                     
                     // Close dropdown
                     selector.classList.remove('open');
                     if (dropList) dropList.classList.remove('show');
+                    const container = selector.closest('.phone-input-container');
+                    if (container) container.style.zIndex = '';
                     if (searchInput) searchInput.value = '';
                     renderItems();
                 }
@@ -119,6 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
             selector.classList.remove('open');
             const dropList = selector.querySelector('.country-dropdown-list');
             if (dropList) dropList.classList.remove('show');
+            const container = selector.closest('.phone-input-container');
+            if (container) container.style.zIndex = '';
         });
     });
 
