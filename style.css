@@ -1429,7 +1429,8 @@ body.loaded .scroll-indicator {
     
     /* Background adaptation: Center product jar horizontally and anchor pedestal exactly at the bottom */
     .hero-bg-image {
-        background-position: 65% bottom; /* Center-right details of 16:9 canvas pushed to center bottom */
+        background-position: 80% bottom; /* Shift image leftwards to pull the right-side jar into view */
+        background-size: auto 75%;       /* Scale down the elements slightly to fit nicely without overlapping buttons */
     }
     
     /* Vertical gradient that provides high contrast at the top for centered text, fading to 0% at the bottom */
