@@ -129,8 +129,8 @@
                     </p>
 
                     <div class="hero-actions animate-fade-in-buttons">
-                        <a href="#order" class="btn-primary">
-                            <span class="btn-text">Order Now</span>
+                        <a href="#enquire" class="btn-primary">
+                            <span class="btn-text">Enquire Now</span>
                             <svg class="btn-arrow" viewBox="0 0 24 24" width="18" height="18">
                                 <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -1188,15 +1188,15 @@
             <div class="order-modal-body" id="order-form-body">
                 <div class="order-modal-header">
                     <span class="gold-label" style="font-size: 0.85rem; margin-bottom: 0.2rem;">Ayurvedic Ritual</span>
-                    <h2 class="order-modal-title" id="order-modal-title">Enquire About MX</h2>
-                    <p class="order-modal-subtitle" id="order-modal-subtitle">Have a question about our Ayurvedic formulation? Send us an enquiry and our experts will consult you shortly.</p>
+                    <h2 class="order-modal-title" id="order-modal-title">Place Your Order</h2>
+                    <p class="order-modal-subtitle" id="order-modal-subtitle">Share your details and select the items you wish to order. Our team will contact you shortly to coordinate payment and delivery.</p>
                 </div>
 
-                <!-- Segmented Switch (Enquiry / Order) -->
+                <!-- Segmented Switch (Order / Enquiry) -->
                 <div class="modal-switch-wrapper">
                     <div class="modal-switch-bg" id="modal-switch-bg"></div>
-                    <button type="button" class="modal-switch-btn active" id="modal-tab-enquiry">Send Enquiry</button>
-                    <button type="button" class="modal-switch-btn" id="modal-tab-order">Place Order</button>
+                    <button type="button" class="modal-switch-btn active" id="modal-tab-order">Place Order</button>
+                    <button type="button" class="modal-switch-btn" id="modal-tab-enquiry">Send Enquiry</button>
                 </div>
                 
                 <form id="order-form" class="order-form">
@@ -1259,19 +1259,18 @@
                         </div>
                         
                         <!-- Right Column: Cart Products Selection OR Dropdown & Message -->
-                        <div class="order-col-right">
-                            <div class="order-section-title" id="order-right-section-title">2. Product Enquiry</div>
+                                   <div class="order-section-title" id="order-right-section-title">2. Select Products</div>
                             
-                            <!-- Cart Section (hidden by default) -->
-                            <div class="order-cart-section" id="modal-cart-section" style="display: none;">
+                            <!-- Cart Section (shown by default) -->
+                            <div class="order-cart-section" id="modal-cart-section">
                                 <div class="order-cart-list" id="order-cart-list">
                                     <!-- Cart items generated dynamically via JavaScript -->
                                 </div>
                                 <span class="error-msg" id="error-cart" style="margin-bottom: 15px; display: block; text-align: center;"></span>
                             </div>
 
-                            <!-- Dropdown Section (shown by default in Enquiry mode) -->
-                            <div class="order-enquiry-dropdown-section" id="modal-enquiry-dropdown-section">
+                            <!-- Dropdown Section (hidden by default in Order mode) -->
+                            <div class="order-enquiry-dropdown-section" id="modal-enquiry-dropdown-section" style="display: none;">
                                 <div class="order-form-group" style="margin-bottom: 20px;">
                                     <label class="order-form-label" for="order-interest">Product of Interest *</label>
                                     <div class="select-wrapper">
@@ -1286,8 +1285,8 @@
                             </div>
                             
                             <div class="order-form-group">
-                                <label class="order-form-label" for="order-message" id="order-message-label">Enquiry Message *</label>
-                                <textarea id="order-message" class="order-form-input order-form-textarea" placeholder="Add custom notes, questions or requests..." required></textarea>
+                                <label class="order-form-label" for="order-message" id="order-message-label">Special Instructions / Message</label>
+                                <textarea id="order-message" class="order-form-input order-form-textarea" placeholder="Add any shipping notes, custom quantities or instructions here..."></textarea>
                                 <span class="error-msg" id="order-error-message"></span>
                             </div>
                         </div>

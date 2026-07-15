@@ -1097,10 +1097,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Open Modal
     function openModal(e) {
         if (e) e.preventDefault();
+        
+        let startMode = 'order'; // Default to Order mode
+        if (e && e.currentTarget) {
+            const hrefVal = e.currentTarget.getAttribute('href');
+            if (hrefVal === '#enquire') {
+                startMode = 'enquiry';
+            }
+        }
+        
         if (orderModal) {
             orderModal.classList.add('active');
             orderModal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden'; // Disable background scrolling
+            switchModalMode(startMode);
         }
     }
 
@@ -1119,34 +1129,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartSection = document.getElementById('modal-cart-section');
     const dropdownSection = document.getElementById('modal-enquiry-dropdown-section');
     
-    let currentModalMode = 'enquiry';
+    let currentModalMode = 'order';
     
     function switchModalMode(mode) {
         currentModalMode = mode;
         
-        if (mode === 'enquiry') {
-            if (tabEnquiry) tabEnquiry.classList.add('active');
-            if (tabOrder) tabOrder.classList.remove('active');
-            if (switchBg) switchBg.style.transform = 'translateX(0)';
-            
-            // Toggle container displays
-            if (cartSection) cartSection.style.display = 'none';
-            if (dropdownSection) dropdownSection.style.display = 'block';
-            
-            // Update modal text labels dynamically
-            if (modalTitle) modalTitle.innerText = 'Enquire About MX';
-            if (modalSubtitle) modalSubtitle.innerText = 'Have a question about our Ayurvedic formulation? Send us an enquiry and our experts will consult you shortly.';
-            if (rightSectionTitle) rightSectionTitle.innerText = '2. Product Enquiry';
-            if (messageLabel) messageLabel.innerText = 'Enquiry Message *';
-            if (messageTextarea) {
-                messageTextarea.placeholder = 'Add custom notes, questions or requests...';
-                messageTextarea.required = true;
-            }
-            if (submitBtnSpan) submitBtnSpan.innerText = 'Send Enquiry';
-        } else {
+        if (mode === 'order') {
             if (tabOrder) tabOrder.classList.add('active');
             if (tabEnquiry) tabEnquiry.classList.remove('active');
-            if (switchBg) switchBg.style.transform = 'translateX(100%)';
+            if (switchBg) switchBg.style.transform = 'translateX(0)';
             
             // Toggle container displays
             if (cartSection) cartSection.style.display = 'block';
@@ -1162,6 +1153,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageTextarea.required = false;
             }
             if (submitBtnSpan) submitBtnSpan.innerText = 'Place Order';
+        } else {
+            if (tabEnquiry) tabEnquiry.classList.add('active');
+            if (tabOrder) tabOrder.classList.remove('active');
+            if (switchBg) switchBg.style.transform = 'translateX(100%)';
+            
+            // Toggle container displays
+            if (cartSection) cartSection.style.display = 'none';
+            if (dropdownSection) dropdownSection.style.display = 'block';
+            
+            // Update modal text labels dynamically
+            if (modalTitle) modalTitle.innerText = 'Enquire About MX';
+            if (modalSubtitle) modalSubtitle.innerText = 'Have a question about our Ayurvedic formulation? Send us an enquiry and our experts will consult you shortly.';
+            if (rightSectionTitle) rightSectionTitle.innerText = '2. Product Enquiry';
+            if (messageLabel) messageLabel.innerText = 'Enquiry Message *';
+            if (messageTextarea) {
+                messageTextarea.placeholder = 'Add custom notes, questions or requests...';
+                messageTextarea.required = true;
+            }
+            if (submitBtnSpan) submitBtnSpan.innerText = 'Send Enquiry';
         }
         
         // Clear prior error labels on switch
@@ -1205,8 +1215,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('order-error-whatsapp').innerText = '';
                 document.getElementById('order-error-message').innerText = '';
                 
-                // Return switch to default Enquiry mode
-                switchModalMode('enquiry');
+                // Return switch to default Order mode
+                switchModalMode('order');
                 
                 // Reset to form view
                 orderFormBody.style.display = 'block';
@@ -1215,8 +1225,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Bind all href="#order" triggers
-    document.querySelectorAll('a[href="#order"]').forEach(trigger => {
+    // Bind all href="#order" and href="#enquire" triggers
+    document.querySelectorAll('a[href="#order"], a[href="#enquire"]').forEach(trigger => {
         trigger.addEventListener('click', openModal);
     });
 
