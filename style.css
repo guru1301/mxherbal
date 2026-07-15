@@ -141,15 +141,19 @@ body:hover .custom-cursor-follower {
 }
 
 .logo-image {
-    height: 46px; /* Legible size: not too big, not too small */
+    height: 64px;
     width: auto;
     display: block;
     object-fit: contain;
-    transition: transform var(--transition-lux-medium);
+    transition: height var(--transition-lux-medium), transform var(--transition-lux-medium);
+}
+
+.navbar.scrolled .logo-image {
+    height: 50px;
 }
 
 .logo-link:hover .logo-image {
-    transform: scale(1.04);
+    transform: scale(1.03);
 }
 
 /* Menu links */
@@ -3497,7 +3501,7 @@ a.contact-row-value:hover {
 
 /* Brand Column */
 .footer-logo-image {
-    height: 52px;
+    height: 76px;
     width: auto;
     display: block;
     object-fit: contain;
