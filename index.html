@@ -920,7 +920,22 @@
                             <!-- Phone Number -->
                             <div class="form-group">
                                 <label for="form-phone" class="form-label">Phone Number *</label>
-                                <input type="tel" id="form-phone" name="phone" class="form-input" placeholder="e.g. +91 98765 43210" required>
+                                <div class="phone-input-container">
+                                    <div class="country-code-selector" id="selector-form-phone" data-target="form-phone" data-dial-code="+91">
+                                        <div class="selected-flag">
+                                            <span class="flag-icon">🇮🇳</span>
+                                            <span class="dial-code">+91</span>
+                                            <svg class="chevron" viewBox="0 0 24 24" width="10" height="10"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.5" fill="none"/></svg>
+                                        </div>
+                                        <div class="country-dropdown-list">
+                                            <div class="country-search-box">
+                                                <input type="text" class="country-search-input" placeholder="Search...">
+                                            </div>
+                                            <div class="country-list-items"></div>
+                                        </div>
+                                    </div>
+                                    <input type="tel" id="form-phone" name="phone" class="tel-input-field" placeholder="Phone number" required>
+                                </div>
                                 <span class="error-msg" id="error-phone"></span>
                             </div>
 
@@ -1202,12 +1217,42 @@
                                 </div>
                                 <div class="order-form-group">
                                     <label class="order-form-label" for="order-mobile">Mobile Number *</label>
-                                    <input type="tel" id="order-mobile" class="order-form-input" placeholder="Phone number" required>
+                                    <div class="phone-input-container">
+                                        <div class="country-code-selector" id="selector-order-mobile" data-target="order-mobile" data-dial-code="+91">
+                                            <div class="selected-flag">
+                                                <span class="flag-icon">🇮🇳</span>
+                                                <span class="dial-code">+91</span>
+                                                <svg class="chevron" viewBox="0 0 24 24" width="10" height="10"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.5" fill="none"/></svg>
+                                            </div>
+                                            <div class="country-dropdown-list">
+                                                <div class="country-search-box">
+                                                    <input type="text" class="country-search-input" placeholder="Search...">
+                                                </div>
+                                                <div class="country-list-items"></div>
+                                            </div>
+                                        </div>
+                                        <input type="tel" id="order-mobile" class="tel-input-field" placeholder="Mobile number" required>
+                                    </div>
                                     <span class="error-msg" id="order-error-mobile"></span>
                                 </div>
                                 <div class="order-form-group">
                                     <label class="order-form-label" for="order-whatsapp">WhatsApp Number *</label>
-                                    <input type="tel" id="order-whatsapp" class="order-form-input" placeholder="WhatsApp number" required>
+                                    <div class="phone-input-container">
+                                        <div class="country-code-selector" id="selector-order-whatsapp" data-target="order-whatsapp" data-dial-code="+91">
+                                            <div class="selected-flag">
+                                                <span class="flag-icon">🇮🇳</span>
+                                                <span class="dial-code">+91</span>
+                                                <svg class="chevron" viewBox="0 0 24 24" width="10" height="10"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.5" fill="none"/></svg>
+                                            </div>
+                                            <div class="country-dropdown-list">
+                                                <div class="country-search-box">
+                                                    <input type="text" class="country-search-input" placeholder="Search...">
+                                                </div>
+                                                <div class="country-list-items"></div>
+                                            </div>
+                                        </div>
+                                        <input type="tel" id="order-whatsapp" class="tel-input-field" placeholder="WhatsApp number" required>
+                                    </div>
                                     <span class="error-msg" id="order-error-whatsapp"></span>
                                 </div>
                             </div>

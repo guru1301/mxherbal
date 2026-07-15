@@ -1,6 +1,127 @@
 /* MX Herbal Beauty — Luxury Hero Section JavaScript Interactions */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Custom Country Flag Dropdown List
+    const countries = [
+        { name: "India", code: "IN", dial: "+91", flag: "🇮🇳" },
+        { name: "United Arab Emirates", code: "AE", dial: "+971", flag: "🇦🇪" },
+        { name: "Saudi Arabia", code: "SA", dial: "+966", flag: "🇸🇦" },
+        { name: "Oman", code: "OM", dial: "+968", flag: "🇴🇲" },
+        { name: "Qatar", code: "QA", dial: "+974", flag: "🇶🇦" },
+        { name: "Kuwait", code: "KW", dial: "+965", flag: "🇰🇼" },
+        { name: "Bahrain", code: "BH", dial: "+973", flag: "🇧🇭" },
+        { name: "United Kingdom", code: "GB", dial: "+44", flag: "🇬🇧" },
+        { name: "United States", code: "US", dial: "+1", flag: "🇺🇸" },
+        { name: "Singapore", code: "SG", dial: "+65", flag: "🇸🇬" },
+        { name: "Malaysia", code: "MY", dial: "+60", flag: "🇲🇾" },
+        { name: "Australia", code: "AU", dial: "+61", flag: "🇦🇺" },
+        { name: "Sri Lanka", code: "LK", dial: "+94", flag: "🇱🇰" },
+        { name: "Nepal", code: "NP", dial: "+977", flag: "🇳🇵" },
+        { name: "Bangladesh", code: "BD", dial: "+880", flag: "🇧🇩" }
+    ];
+
+    document.querySelectorAll('.country-code-selector').forEach(selector => {
+        const listContainer = selector.querySelector('.country-list-items');
+        const searchInput = selector.querySelector('.country-search-input');
+        
+        // Function to render items
+        function renderItems(filter = '') {
+            const filtered = countries.filter(c => 
+                c.name.toLowerCase().includes(filter.toLowerCase()) || 
+                c.dial.includes(filter)
+            );
+            
+            if (listContainer) {
+                listContainer.innerHTML = filtered.map(c => `
+                    <div class="country-item" data-dial="${c.dial}" data-flag="${c.flag}">
+                        <div class="country-item-left">
+                            <span class="flag-icon">${c.flag}</span>
+                            <span class="country-name">${c.name}</span>
+                        </div>
+                        <span class="country-dial">${c.dial}</span>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // Initial render
+        renderItems();
+        
+        // Toggle dropdown open state on clicking the flag pill
+        const selectedFlag = selector.querySelector('.selected-flag');
+        if (selectedFlag) {
+            selectedFlag.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                // Close other dropdowns first
+                document.querySelectorAll('.country-code-selector').forEach(other => {
+                    if (other !== selector) {
+                        other.classList.remove('open');
+                        const otherList = other.querySelector('.country-dropdown-list');
+                        if (otherList) otherList.classList.remove('show');
+                    }
+                });
+                
+                selector.classList.toggle('open');
+                const dropList = selector.querySelector('.country-dropdown-list');
+                if (dropList) dropList.classList.toggle('show');
+                
+                if (selector.classList.contains('open') && searchInput) {
+                    searchInput.focus();
+                }
+            });
+        }
+        
+        // Stop clicks inside the dropdown from closing it
+        const dropList = selector.querySelector('.country-dropdown-list');
+        if (dropList) {
+            dropList.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+        
+        // Filter search input
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                renderItems(e.target.value.trim());
+            });
+        }
+        
+        // Handle country selection
+        if (listContainer) {
+            listContainer.addEventListener('click', (e) => {
+                const item = e.target.closest('.country-item');
+                if (item) {
+                    const dial = item.getAttribute('data-dial');
+                    const flag = item.getAttribute('data-flag');
+                    
+                    // Update selected text and flag
+                    selector.setAttribute('data-dial-code', dial);
+                    const flagIcon = selector.querySelector('.selected-flag .flag-icon');
+                    const dialCodeSpan = selector.querySelector('.selected-flag .dial-code');
+                    
+                    if (flagIcon) flagIcon.innerText = flag;
+                    if (dialCodeSpan) dialCodeSpan.innerText = dial;
+                    
+                    // Close dropdown
+                    selector.classList.remove('open');
+                    if (dropList) dropList.classList.remove('show');
+                    if (searchInput) searchInput.value = '';
+                    renderItems();
+                }
+            });
+        }
+    });
+    
+    // Close dropdown list on clicking outside
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.country-code-selector').forEach(selector => {
+            selector.classList.remove('open');
+            const dropList = selector.querySelector('.country-dropdown-list');
+            if (dropList) dropList.classList.remove('show');
+        });
+    });
+
     // 1. Initial Launch Entry Trigger
     setTimeout(() => {
         document.body.classList.add('loaded');
@@ -645,12 +766,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Phone validation
             const phoneVal = phoneInput.value.trim();
-            const phoneRegex = /^\+?[0-9\s\-()]{7,18}$/;
+            const localPhoneRegex = /^[0-9\s\-()]{6,15}$/;
             if (!phoneVal) {
                 errPhone.innerText = 'Please enter your phone number.';
                 isValid = false;
-            } else if (!phoneRegex.test(phoneVal)) {
-                errPhone.innerText = 'Please enter a valid phone number (min 7 digits).';
+            } else if (!localPhoneRegex.test(phoneVal)) {
+                errPhone.innerText = 'Please enter a valid local phone number (6-15 digits).';
                 isValid = false;
             }
             
@@ -673,9 +794,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (isValid) {
                 // Submit action to the custom Python backend API
+                const dialCode = document.getElementById('selector-form-phone').getAttribute('data-dial-code') || '+91';
                 const formData = {
                     name: nameInput.value.trim(),
-                    phone: phoneInput.value.trim(),
+                    phone: `${dialCode} ${phoneVal}`,
                     email: emailInput.value.trim(),
                     interest: document.getElementById('form-interest').value,
                     message: messageInput.value.trim()
@@ -1138,12 +1260,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Mobile validation
             const mobileVal = mobileInput.value.trim();
-            const phoneRegex = /^\+?[0-9\s\-()]{7,18}$/;
+            const localPhoneRegex = /^[0-9\s\-()]{6,15}$/;
             if (!mobileVal) {
                 errMobile.innerText = 'Please enter your mobile number.';
                 isValid = false;
-            } else if (!phoneRegex.test(mobileVal)) {
-                errMobile.innerText = 'Please enter a valid phone number (min 7 digits).';
+            } else if (!localPhoneRegex.test(mobileVal)) {
+                errMobile.innerText = 'Please enter a valid local phone number (6-15 digits).';
                 isValid = false;
             }
             
@@ -1152,8 +1274,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!whatsappVal) {
                 errWhatsapp.innerText = 'Please enter your WhatsApp number.';
                 isValid = false;
-            } else if (!phoneRegex.test(whatsappVal)) {
-                errWhatsapp.innerText = 'Please enter a valid phone number.';
+            } else if (!localPhoneRegex.test(whatsappVal)) {
+                errWhatsapp.innerText = 'Please enter a valid local phone number (6-15 digits).';
                 isValid = false;
             }
             
@@ -1172,11 +1294,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (isValid) {
                     // Submit Order request
+                    const mobileDial = document.getElementById('selector-order-mobile').getAttribute('data-dial-code') || '+91';
+                    const whatsappDial = document.getElementById('selector-order-whatsapp').getAttribute('data-dial-code') || '+91';
                     const orderData = {
                         name: nameInput.value.trim(),
                         email: emailVal,
-                        mobile: mobileVal,
-                        whatsapp: whatsappVal,
+                        mobile: `${mobileDial} ${mobileVal}`,
+                        whatsapp: `${whatsappDial} ${whatsappVal}`,
                         message: messageInput.value.trim(),
                         products: { ...quantities },
                         total_quantity: totalQty
@@ -1212,10 +1336,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (isValid) {
                     // Submit Enquiry request
+                    const mobileDial = document.getElementById('selector-order-mobile').getAttribute('data-dial-code') || '+91';
                     const enquiryData = {
                         name: nameInput.value.trim(),
                         email: emailVal,
-                        phone: mobileVal, // map mobile to phone for api
+                        phone: `${mobileDial} ${mobileVal}`, // map mobile to phone for api
                         interest: document.getElementById('order-interest').value,
                         message: messageInput.value.trim()
                     };

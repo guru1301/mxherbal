@@ -4514,6 +4514,202 @@ a.contact-row-value:hover {
     outline-offset: 2px;
 }
 
+/* Custom Phone Input Container */
+.phone-input-container {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    border: 1px solid rgba(198, 161, 91, 0.20);
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.50);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+}
+
+/* For dark section (Section 6) contact form */
+.contact-section .phone-input-container {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-color: rgba(198, 161, 91, 0.15);
+}
+
+.phone-input-container:focus-within {
+    border-color: #C6A15B;
+    box-shadow: 0 0 0 1px #C6A15B;
+}
+
+.country-code-selector {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    cursor: pointer;
+    border-right: 1px solid rgba(198, 161, 91, 0.20);
+    user-select: none;
+    z-index: 15;
+}
+
+.contact-section .country-code-selector {
+    border-right-color: rgba(198, 161, 91, 0.15);
+}
+
+.selected-flag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: var(--color-charcoal);
+}
+
+.contact-section .selected-flag {
+    color: var(--color-cream);
+}
+
+.selected-flag .chevron {
+    transition: transform 0.3s ease;
+    opacity: 0.7;
+}
+
+.country-code-selector.open .selected-flag .chevron {
+    transform: rotate(180deg);
+}
+
+/* Custom Dropdown List */
+.country-dropdown-list {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 250px;
+    max-height: 220px;
+    overflow-y: auto;
+    background-color: rgba(245, 239, 228, 0.98); /* Ivory glass matching modal */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(198, 161, 91, 0.30);
+    border-radius: 12px;
+    box-shadow: 0 15px 45px rgba(7, 17, 13, 0.18);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+}
+
+/* For dark section (Section 6) custom drop theme */
+.contact-section .country-dropdown-list {
+    background-color: rgba(12, 25, 19, 0.98); /* Forest black glass */
+    border-color: rgba(198, 161, 91, 0.25);
+}
+
+.country-dropdown-list.show {
+    display: flex;
+}
+
+.country-search-box {
+    padding: 8px;
+    border-bottom: 1px solid rgba(198, 161, 91, 0.12);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: inherit;
+}
+
+.country-search-input {
+    width: 100%;
+    padding: 6px 10px;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    border: 1px solid rgba(198, 161, 91, 0.20);
+    border-radius: 6px;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.50);
+    color: var(--color-charcoal);
+}
+
+.contact-section .country-search-input {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--color-cream);
+    border-color: rgba(198, 161, 91, 0.15);
+}
+
+.country-list-items {
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(198, 161, 91, 0.3) transparent;
+}
+
+.country-list-items::-webkit-scrollbar {
+    width: 4px;
+}
+.country-list-items::-webkit-scrollbar-thumb {
+    background-color: rgba(198, 161, 91, 0.3);
+    border-radius: 4px;
+}
+
+.country-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    color: var(--color-charcoal);
+}
+
+.contact-section .country-item {
+    color: var(--color-cream);
+}
+
+.country-item:hover {
+    background-color: rgba(198, 161, 91, 0.12);
+    color: var(--color-charcoal);
+}
+
+.contact-section .country-item:hover {
+    background-color: rgba(198, 161, 91, 0.20);
+    color: #F5EFE4;
+}
+
+.country-item-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.country-name {
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 130px;
+}
+
+.country-dial {
+    font-weight: 600;
+    color: #C6A15B;
+    font-size: 0.78rem;
+}
+
+/* Remove border/styling from inner text field */
+.phone-input-container .tel-input-field {
+    border: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    flex: 1;
+    padding: 10px 14px;
+    outline: none !important;
+    box-shadow: none !important;
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    color: var(--color-charcoal);
+    width: 100%;
+}
+
+.contact-section .phone-input-container .tel-input-field {
+    color: var(--color-cream);
+}
+
+
 
 
 
