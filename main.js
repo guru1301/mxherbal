@@ -758,64 +758,134 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Centralized product data list (minimizes HTML size and complexity)
     const productsData = [
-        { id: 'beauty-powder-50g', name: 'MX Beauty Powder', variant: '50g', price: 150 },
-        { id: 'beauty-powder-100g', name: 'MX Beauty Powder', variant: '100g', price: 300 },
-        { id: 'face-powder-50g', name: 'MX Face Powder', variant: '50g', price: 150 },
-        { id: 'face-powder-100g', name: 'MX Face Powder', variant: '100g', price: 300 },
-        { id: 'hair-oil-100ml', name: 'MX Hair Oil', variant: '100ml', price: 220 },
-        { id: 'hair-oil-200ml', name: 'MX Hair Oil', variant: '200ml', price: 400 }
+        {
+            id: 'beauty-powder',
+            name: 'MX Beauty Powder',
+            variants: [
+                { name: '50g', price: 150 },
+                { name: '100g', price: 300 }
+            ],
+            selectedVariant: '50g'
+        },
+        {
+            id: 'face-powder',
+            name: 'MX Face Powder',
+            variants: [
+                { name: '50g', price: 150 },
+                { name: '100g', price: 300 }
+            ],
+            selectedVariant: '50g'
+        },
+        {
+            id: 'hair-oil',
+            name: 'MX Hair Oil',
+            variants: [
+                { name: '100ml', price: 220 },
+                { name: '200ml', price: 400 }
+            ],
+            selectedVariant: '100ml'
+        }
     ];
     
     // Initialize quantities state dynamically from productsData
-    const quantities = {};
-    productsData.forEach(p => {
-        quantities[p.id] = 0;
-    });
+    const quantities = {
+        'beauty-powder': { '50g': 0, '100g': 0 },
+        'face-powder': { '50g': 0, '100g': 0 },
+        'hair-oil': { '100ml': 0, '200ml': 0 }
+    };
 
-    // Render Cart HTML dynamically
+    // Render Cart HTML dynamically with inline variant switchers
     if (orderCartList) {
-        orderCartList.innerHTML = productsData.map(prod => `
-            <div class="order-cart-item" data-product-id="${prod.id}">
-                <div class="cart-item-details">
-                    <div class="cart-item-info">
-                        <h4 class="cart-item-name">${prod.name} <span class="cart-item-var">(${prod.variant})</span></h4>
-                        <p class="cart-item-desc">₹${prod.price}</p>
+        orderCartList.innerHTML = productsData.map(prod => {
+            const defaultVar = prod.variants[0];
+            return `
+                <div class="order-cart-item" data-product-id="${prod.id}">
+                    <div class="cart-item-details">
+                        <div class="cart-item-info">
+                            <h4 class="cart-item-name">${prod.name}</h4>
+                            <div class="cart-item-meta">
+                                <div class="cart-item-variant-select">
+                                    ${prod.variants.map((v, i) => `
+                                        <button type="button" class="var-select-btn ${i === 0 ? 'active' : ''}" data-product-id="${prod.id}" data-variant="${v.name}">${v.name}</button>
+                                    `).join('')}
+                                </div>
+                                <span class="cart-item-price" id="price-${prod.id}">₹${defaultVar.price}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button type="button" class="qty-btn qty-minus" data-product-id="${prod.id}" aria-label="Decrease quantity">—</button>
+                        <span class="qty-number" id="qty-${prod.id}">0</span>
+                        <button type="button" class="qty-btn qty-plus" data-product-id="${prod.id}" aria-label="Increase quantity">+</button>
                     </div>
                 </div>
-                <div class="cart-item-quantity">
-                    <button type="button" class="qty-btn qty-minus" data-product-id="${prod.id}" aria-label="Decrease quantity">—</button>
-                    <span class="qty-number" id="qty-${prod.id}">0</span>
-                    <button type="button" class="qty-btn qty-plus" data-product-id="${prod.id}" aria-label="Increase quantity">+</button>
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
-    // Update quantity DOM display
+    // Update quantity DOM display based on selected variant
     function updateQtyDisplay(productId) {
         const qtyElement = document.getElementById(`qty-${productId}`);
-        if (qtyElement) {
-            qtyElement.innerText = quantities[productId];
+        const product = productsData.find(p => p.id === productId);
+        if (qtyElement && product) {
+            const selectedVar = product.selectedVariant;
+            qtyElement.innerText = quantities[productId][selectedVar];
         }
     }
 
     // Bind quantity adjusters dynamically via event delegation on cart container
     if (orderCartList) {
         orderCartList.addEventListener('click', (e) => {
-            const btn = e.target.closest('.qty-btn');
-            if (!btn) return;
-            
-            const productId = btn.getAttribute('data-product-id');
-            const isPlus = btn.classList.contains('qty-plus');
-            
-            if (isPlus) {
-                quantities[productId]++;
-            } else if (quantities[productId] > 0) {
-                quantities[productId]--;
+            // Check if clicking variant select button
+            const varBtn = e.target.closest('.var-select-btn');
+            if (varBtn) {
+                const productId = varBtn.getAttribute('data-product-id');
+                const variantName = varBtn.getAttribute('data-variant');
+                
+                // Find product and set selected variant
+                const product = productsData.find(p => p.id === productId);
+                if (product) {
+                    product.selectedVariant = variantName;
+                    
+                    // Update active class on buttons
+                    const btnContainer = varBtn.parentElement;
+                    btnContainer.querySelectorAll('.var-select-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    varBtn.classList.add('active');
+                    
+                    // Update price display
+                    const variantData = product.variants.find(v => v.name === variantName);
+                    const priceEl = document.getElementById(`price-${productId}`);
+                    if (priceEl && variantData) {
+                        priceEl.innerText = `₹${variantData.price}`;
+                    }
+                    
+                    // Update quantity display
+                    updateQtyDisplay(productId);
+                }
+                return;
             }
             
-            updateQtyDisplay(productId);
-            errorCart.innerText = ''; // Clear prior cart error
+            // Check if clicking quantity adjust button
+            const qtyBtn = e.target.closest('.qty-btn');
+            if (qtyBtn) {
+                const productId = qtyBtn.getAttribute('data-product-id');
+                const isPlus = qtyBtn.classList.contains('qty-plus');
+                
+                const product = productsData.find(p => p.id === productId);
+                if (product) {
+                    const selectedVar = product.selectedVariant;
+                    if (isPlus) {
+                        quantities[productId][selectedVar]++;
+                    } else if (quantities[productId][selectedVar] > 0) {
+                        quantities[productId][selectedVar]--;
+                    }
+                    
+                    updateQtyDisplay(productId);
+                    if (errorCart) errorCart.innerText = ''; // Clear prior cart error
+                }
+            }
         });
     }
 
@@ -909,9 +979,11 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 orderForm.reset();
                 // Reset cart counters
-                for (const key in quantities) {
-                    quantities[key] = 0;
-                    updateQtyDisplay(key);
+                for (const prodId in quantities) {
+                    for (const varName in quantities[prodId]) {
+                        quantities[prodId][varName] = 0;
+                    }
+                    updateQtyDisplay(prodId);
                 }
                 // Clear error labels
                 if (errorCart) errorCart.innerText = '';
@@ -1017,7 +1089,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Mode-dependent validation
             if (currentModalMode === 'order') {
-                const totalQty = Object.values(quantities).reduce((a, b) => a + b, 0);
+                let totalQty = 0;
+                for (const prodId in quantities) {
+                    for (const varName in quantities[prodId]) {
+                        totalQty += quantities[prodId][varName];
+                    }
+                }
                 if (totalQty === 0) {
                     if (errorCart) errorCart.innerText = 'Please select at least 1 product variant by clicking + button.';
                     isValid = false;

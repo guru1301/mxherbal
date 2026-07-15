@@ -4060,19 +4060,46 @@ a.contact-row-value:hover {
     margin: 0;
 }
 
-.cart-item-var {
-    font-size: 0.85rem;
-    color: #C6A15B; /* Brand gold */
-    font-weight: 400;
-    margin-left: 5px;
+/* Inline Variant Selector inside Cart Item */
+.cart-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 6px;
 }
 
-.cart-item-desc {
+.cart-item-variant-select {
+    display: flex;
+    background-color: rgba(198, 161, 91, 0.05);
+    border: 1px solid rgba(198, 161, 91, 0.15);
+    border-radius: 6px;
+    padding: 2px;
+}
+
+.var-select-btn {
+    background: transparent;
+    border: none;
     font-family: var(--font-sans);
-    font-size: 0.8rem;
-    color: var(--color-forest);
-    opacity: 0.75;
-    margin: 0;
+    font-size: 0.70rem;
+    font-weight: 600;
+    color: var(--color-charcoal);
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.25s ease, color 0.25s ease;
+    outline: none;
+}
+
+.var-select-btn.active {
+    background-color: #C6A15B;
+    color: #07110D !important;
+}
+
+.cart-item-price {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #C6A15B;
 }
 
 /* Quantity Adjusters */

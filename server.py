@@ -86,9 +86,17 @@ class MXHerbalRequestHandler(http.server.SimpleHTTPRequestHandler):
             print(f"Message:   {data.get('message', 'N/A')}")
             print("Products ordered:")
             products = data.get('products', {})
-            for prod, qty in products.items():
-                if qty > 0:
-                    print(f"  - {prod}: {qty} unit(s)")
+            for prod, var_map in products.items():
+                if isinstance(var_map, dict):
+                    for var_name, qty in var_map.items():
+                        if qty > 0:
+                            print(f"  - {prod} ({var_name}): {qty} unit(s)")
+                else:
+                    try:
+                        if int(var_map) > 0:
+                            print(f"  - {prod}: {var_map} unit(s)")
+                    except Exception:
+                        pass
             print(f"Total quantity: {data.get('total_quantity', 0)}")
             print("="*40 + "\n")
             
