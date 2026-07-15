@@ -1278,9 +1278,11 @@ body.loaded .scroll-indicator {
         max-width: 600px;
     }
     
-    /* Reposition background to let the product shine */
+    /* Load portrait mobile-optimized background image */
     .hero-bg-image {
-        background-position: right 65% center;
+        background-image: url('assets/hero/mobile background.png') !important;
+        background-position: center bottom;
+        background-size: cover;
     }
     
     /* Overlay becomes denser on tablet to protect text readability */
@@ -1433,7 +1435,7 @@ body.loaded .scroll-indicator {
     
     /* Background adaptation: Center product jar horizontally and anchor pedestal exactly at the bottom */
     .hero-bg-image {
-        background-position: 82% bottom; /* Shift image leftwards to pull the right-side jar into view */
+        background-position: center bottom; 
     }
     
     /* Vertical gradient that provides high contrast at the top for centered text, fading to 0% at the bottom */
