@@ -1465,10 +1465,10 @@ body.loaded .scroll-indicator {
     .hero-overlay {
         background: linear-gradient(
             180deg,
-            rgba(250, 249, 245, 0.98) 0%,
-            rgba(250, 249, 245, 0.88) 35%,
-            rgba(250, 249, 245, 0.5) 60%,
-            rgba(250, 249, 245, 0) 85%
+            rgba(250, 249, 245, 0.45) 0%,
+            rgba(250, 249, 245, 0.25) 45%,
+            rgba(250, 249, 245, 0.10) 70%,
+            rgba(250, 249, 245, 0) 90%
         );
     }
     
