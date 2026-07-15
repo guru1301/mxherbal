@@ -1281,7 +1281,7 @@ body.loaded .scroll-indicator {
     /* Load portrait mobile-optimized background image */
     .hero-bg-image {
         background-image: url('assets/hero/mobile background.png') !important;
-        background-position: center 108%;
+        background-position: center 122%;
         background-size: cover;
     }
     
@@ -1391,6 +1391,7 @@ body.loaded .scroll-indicator {
         margin-bottom: 1.2rem;
         text-align: center;
         align-self: center;
+        text-shadow: 0 2px 15px rgba(250, 249, 245, 0.95);
     }
     
     .hero-paragraph {
@@ -1399,6 +1400,7 @@ body.loaded .scroll-indicator {
         margin-bottom: 2rem;
         padding: 0 15px;
         text-align: center;
+        text-shadow: 0 2px 10px rgba(250, 249, 245, 0.95);
     }
     
     /* Vertically Stack and Center Buttons */
@@ -1435,7 +1437,7 @@ body.loaded .scroll-indicator {
     
     /* Background adaptation: Center product jar horizontally and anchor pedestal exactly at the bottom */
     .hero-bg-image {
-        background-position: center 108%; 
+        background-position: center 122%; 
     }
     
     /* Vertical gradient that provides high contrast at the top for centered text, fading to 0% at the bottom */
