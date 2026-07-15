@@ -120,12 +120,13 @@ body:hover .custom-cursor-follower {
 }
 
 .nav-container {
+    position: relative;
     width: 100%;
     max-width: 1600px;
     margin: 0 auto;
     padding: 0 4%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -180,6 +181,9 @@ body:hover .custom-cursor-follower {
 
 /* Menu links */
 .nav-menu {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
 }
