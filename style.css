@@ -1281,7 +1281,7 @@ body.loaded .scroll-indicator {
     /* Load portrait mobile-optimized background image */
     .hero-bg-image {
         background-image: url('assets/hero/mobile background.png') !important;
-        background-position: center bottom;
+        background-position: center 108%;
         background-size: cover;
     }
     
@@ -1435,7 +1435,7 @@ body.loaded .scroll-indicator {
     
     /* Background adaptation: Center product jar horizontally and anchor pedestal exactly at the bottom */
     .hero-bg-image {
-        background-position: center bottom; 
+        background-position: center 108%; 
     }
     
     /* Vertical gradient that provides high contrast at the top for centered text, fading to 0% at the bottom */
