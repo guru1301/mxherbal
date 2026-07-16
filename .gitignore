@@ -1,0 +1,17 @@
+# Database & Logs
+orders.json
+enquiries.json
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment & IDE
+.env
+.env.local
+.env.*.local
+.gemini/
+.agents/

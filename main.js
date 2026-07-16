@@ -149,11 +149,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Navigation Shrinking and Backdrop Opacity on Scroll
     const mainNav = document.getElementById('main-nav');
+    let lastKnownScrollPosition = 0;
+    let ticking = false;
+
     const handleScroll = () => {
-        if (window.scrollY > 50) {
-            mainNav.classList.add('scrolled');
-        } else {
-            mainNav.classList.remove('scrolled');
+        lastKnownScrollPosition = window.scrollY;
+
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                if (lastKnownScrollPosition > 50) {
+                    mainNav.classList.add('scrolled');
+                } else {
+                    mainNav.classList.remove('scrolled');
+                }
+                ticking = false;
+            });
+
+            ticking = true;
         }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -164,70 +176,73 @@ document.addEventListener('DOMContentLoaded', () => {
     const cursor = document.querySelector('.custom-cursor');
     const follower = document.querySelector('.custom-cursor-follower');
     
-    let mouseX = 0, mouseY = 0; // Current mouse position
-    let cursorX = 0, cursorY = 0; // Follower current position
-    let isHovering = false;
+    // Check if the device has hover capability (desktop/pointer device)
+    const hasPointer = window.matchMedia('(pointer: fine)').matches;
+    
+    if (hasPointer && cursor && follower) {
+        let mouseX = 0, mouseY = 0; // Current mouse position
+        let cursorX = 0, cursorY = 0; // Follower current position
 
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        
-        // Instant position for the dot
-        cursor.style.left = `${mouseX}px`;
-        cursor.style.top = `${mouseY}px`;
-    });
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Instant position for the dot using transform (translate3d is GPU accelerated)
+            cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+        });
 
-    // Animate Follower with interpolation (lerp) for smooth luxury lag
-    const animateCursor = () => {
-        const dx = mouseX - cursorX;
-        const dy = mouseY - cursorY;
-        
-        // Interpolation factor: 0.15 makes it float smoothly
-        cursorX += dx * 0.15;
-        cursorY += dy * 0.15;
-        
-        follower.style.left = `${cursorX}px`;
-        follower.style.top = `${cursorY}px`;
-        
+        // Animate Follower with interpolation (lerp) for smooth luxury lag
+        const animateCursor = () => {
+            const dx = mouseX - cursorX;
+            const dy = mouseY - cursorY;
+            
+            // Interpolation factor: 0.15 makes it float smoothly
+            cursorX += dx * 0.15;
+            cursorY += dy * 0.15;
+            
+            follower.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+            
+            requestAnimationFrame(animateCursor);
+        };
         requestAnimationFrame(animateCursor);
-    };
-    requestAnimationFrame(animateCursor);
 
-    // Hover effect expansions for links & interactive elements
-    const interactives = document.querySelectorAll('a, button, .nav-toggle');
-    interactives.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursor.style.width = '14px';
-            cursor.style.height = '14px';
-            cursor.style.backgroundColor = 'var(--color-forest)';
-            follower.style.width = '46px';
-            follower.style.height = '46px';
-            follower.style.borderColor = 'var(--color-gold)';
+        // Hover effect expansions for links & interactive elements
+        const interactives = document.querySelectorAll('a, button, .nav-toggle');
+        interactives.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.width = '14px';
+                cursor.style.height = '14px';
+                cursor.style.backgroundColor = 'var(--color-forest)';
+                follower.style.width = '46px';
+                follower.style.height = '46px';
+                follower.style.borderColor = 'var(--color-gold)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.width = '8px';
+                cursor.style.height = '8px';
+                cursor.style.backgroundColor = 'var(--color-gold)';
+                follower.style.width = '32px';
+                follower.style.height = '32px';
+                follower.style.borderColor = 'rgba(191, 163, 122, 0.3)';
+            });
         });
-        el.addEventListener('mouseleave', () => {
-            cursor.style.width = '8px';
-            cursor.style.height = '8px';
-            cursor.style.backgroundColor = 'var(--color-gold)';
-            follower.style.width = '32px';
-            follower.style.height = '32px';
-            follower.style.borderColor = 'rgba(191, 163, 122, 0.3)';
+
+        // Hide custom cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+            follower.style.opacity = '0';
         });
-    });
-
-    // Hide custom cursor when mouse leaves window
-    document.addEventListener('mouseleave', () => {
-        cursor.style.opacity = '0';
-        follower.style.opacity = '0';
-    });
-    document.addEventListener('mouseenter', () => {
-        cursor.style.opacity = '1';
-        follower.style.opacity = '1';
-    });
-
-
-    // 4. Background image is static as requested.
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+            follower.style.opacity = '1';
+        });
+    } else {
+        // Remove custom cursor elements on mobile/pointerless devices to save layout & memory
+        if (cursor) cursor.remove();
+        if (follower) follower.remove();
+    }
+// 4. Background image is static as requested.
     // No parallax or zoom animations are applied to .hero-bg-image.
-
 
     // 5. Canvas-based Floating Organic Micro-Particles (Botanical golden dust)
     const canvas = document.getElementById('particles-canvas');
@@ -262,6 +277,12 @@ document.addEventListener('DOMContentLoaded', () => {
             this.maxOpacity = Math.random() * 0.35 + 0.15; // Muted soft glow
             this.opacity = 0;
             this.fadeIn = true;
+
+            // Pre-calculate colors to avoid processing in the animation loop
+            const isGold = Math.random() > 0.4;
+            this.r = isGold ? 191 : 250;
+            this.g = isGold ? 163 : 249;
+            this.b = isGold ? 122 : 245;
         }
 
         update() {
@@ -290,22 +311,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         draw() {
             ctx.beginPath();
-            // Give golden dust glow or ivory pollen look randomly
-            const isGold = Math.random() > 0.4;
-            const r = isGold ? 191 : 250;
-            const g = isGold ? 163 : 249;
-            const b = isGold ? 122 : 245;
-            
-            // Soft radial glow shape
-            const gradient = ctx.createRadialGradient(
-                this.x, this.y, 0,
-                this.x, this.y, this.size
-            );
-            gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${this.opacity})`);
-            gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-            
-            ctx.fillStyle = gradient;
-            ctx.arc(this.x, this.y, this.size * 1.5, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${this.r}, ${this.g}, ${this.b}, ${this.opacity})`;
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
         }
     }
@@ -315,8 +322,17 @@ document.addEventListener('DOMContentLoaded', () => {
         particles.push(new Particle());
     }
 
-    // Particles loop
+    // Particles loop with visibility check to save CPU/GPU when offscreen
+    let particlesActive = true;
+    let isHeroAnimating = false;
+
     const animateParticles = () => {
+        if (!particlesActive) {
+            isHeroAnimating = false;
+            return;
+        }
+        isHeroAnimating = true;
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         particles.forEach(p => {
@@ -326,7 +342,24 @@ document.addEventListener('DOMContentLoaded', () => {
         
         requestAnimationFrame(animateParticles);
     };
-    requestAnimationFrame(animateParticles);
+
+    const startHeroParticles = () => {
+        if (!isHeroAnimating && particlesActive) {
+            requestAnimationFrame(animateParticles);
+        }
+    };
+
+    // Use IntersectionObserver to stop animations when scrolled past
+    const heroObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            particlesActive = entry.isIntersecting;
+            if (particlesActive) {
+                startHeroParticles();
+            }
+        });
+    }, { threshold: 0 });
+    
+    heroObserver.observe(canvas);
 
 
     // 5b. Collection Canvas-based Floating Organic Micro-Particles (Botanical golden dust)
@@ -361,6 +394,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.maxOpacity = Math.random() * 0.35 + 0.15;
                 this.opacity = 0;
                 this.fadeIn = true;
+
+                // Pre-calculate colors to avoid processing in the animation loop
+                const isGold = Math.random() > 0.4;
+                this.r = isGold ? 191 : 250;
+                this.g = isGold ? 163 : 249;
+                this.b = isGold ? 122 : 245;
             }
 
             update() {
@@ -386,20 +425,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             draw() {
                 cCtx.beginPath();
-                const isGold = Math.random() > 0.4;
-                const r = isGold ? 191 : 250;
-                const g = isGold ? 163 : 249;
-                const b = isGold ? 122 : 245;
-                
-                const gradient = cCtx.createRadialGradient(
-                    this.x, this.y, 0,
-                    this.x, this.y, this.size
-                );
-                gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${this.opacity})`);
-                gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-                
-                cCtx.fillStyle = gradient;
-                cCtx.arc(this.x, this.y, this.size * 1.5, 0, Math.PI * 2);
+                cCtx.fillStyle = `rgba(${this.r}, ${this.g}, ${this.b}, ${this.opacity})`;
+                cCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 cCtx.fill();
             }
         }
@@ -408,7 +435,17 @@ document.addEventListener('DOMContentLoaded', () => {
             collectionParticles.push(new CollectionParticle());
         }
 
+        // Collection particles loop with visibility check to save CPU/GPU when offscreen
+        let collectionParticlesActive = true;
+        let isCollectionAnimating = false;
+
         const animateCollectionParticles = () => {
+            if (!collectionParticlesActive) {
+                isCollectionAnimating = false;
+                return;
+            }
+            isCollectionAnimating = true;
+
             cCtx.clearRect(0, 0, collectionCanvas.width, collectionCanvas.height);
             collectionParticles.forEach(p => {
                 p.update();
@@ -416,7 +453,24 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             requestAnimationFrame(animateCollectionParticles);
         };
-        requestAnimationFrame(animateCollectionParticles);
+
+        const startCollectionParticles = () => {
+            if (!isCollectionAnimating && collectionParticlesActive) {
+                requestAnimationFrame(animateCollectionParticles);
+            }
+        };
+
+        // Use IntersectionObserver to stop animations when scrolled past
+        const collectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                collectionParticlesActive = entry.isIntersecting;
+                if (collectionParticlesActive) {
+                    startCollectionParticles();
+                }
+            });
+        }, { threshold: 0 });
+        
+        collectionObserver.observe(collectionCanvas);
     }
 
 
@@ -466,28 +520,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 {
                     number: "01",
                     title: "MIX",
-                    image: "assets/step1.png",
+                    image: "assets/step1.webp",
                     description: "Take 1–2 teaspoons of MX Herbal Face Powder in a clean bowl. Add rose water, milk or aloe vera and mix well to form a smooth paste.",
                     icon: `<svg class="ritual-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18" /><path d="M12 2v10" /><path d="m9 9 3 3 3-3" /><path d="M4 12c0 4.4 3.6 8 8 8s8-3.6 8-8" /></svg>`
                 },
                 {
                     number: "02",
                     title: "APPLY",
-                    image: "assets/step2.png",
+                    image: "assets/step2.webp",
                     description: "Apply evenly on your face and neck using clean fingertips or a soft face-pack brush. Avoid the delicate eye area.",
                     icon: `<svg class="ritual-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 8-8 8" /><path d="m15 5 4 4" /><path d="m19 9-2 2-4-4 2-2 4 4Z" /><path d="M9 15c-1.5 0-3-1.5-3-3l3-3 3 3-3 3Z" opacity="0.4" /></svg>`
                 },
                 {
                     number: "03",
                     title: "REST",
-                    image: "assets/step3.png",
+                    image: "assets/step3.webp",
                     description: "Leave the herbal mask on for 15–20 minutes and allow it to gently settle on the skin.",
                     icon: `<svg class="ritual-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>`
                 },
                 {
                     number: "04",
                     title: "RINSE & REVEAL",
-                    image: "assets/step4.png",
+                    image: "assets/step4.webp",
                     description: "Rinse gently with lukewarm water and pat dry. Follow with your preferred moisturizer as part of your regular skincare routine.",
                     icon: `<svg class="ritual-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C12 2 4 10.5 4 15a8 8 0 0 0 16 0c0-4.5-8-13-8-13Z" /></svg>`
                 }
@@ -522,28 +576,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 {
                     number: "01",
                     title: "TAKE",
-                    image: "assets/oil-step1.png",
+                    image: "assets/hair1.webp",
                     description: "Take the required amount of MX Herbal Hair Oil based on your hair length and density.",
                     icon: `<svg class="ritual-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6" /><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7Z" /></svg>`
                 },
                 {
                     number: "02",
                     title: "MASSAGE",
-                    image: "assets/oil-step2.png",
+                    image: "assets/hair2.webp",
                     description: "Gently massage the oil into the scalp using circular motions for 5–10 minutes, distributing it through the roots and lengths.",
                     icon: `<svg class="ritual-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.5-4.5 10-10 10S2 17.5 2 12" /><path d="M12 6a6 6 0 0 1 6 6" /><path d="M12 10a2 2 0 0 1 2 2" /></svg>`
                 },
                 {
                     number: "03",
                     title: "NOURISH",
-                    image: "assets/oil-step3.png",
+                    image: "assets/hair3.webp",
                     description: "Leave the oil on for at least 30 minutes before washing. For a longer conditioning ritual, it may be left on overnight if suitable for your routine.",
                     icon: `<svg class="ritual-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.58 1 9.3a7 7 0 0 1-9 8.7Z" /><path d="M9 22c0-3.5 2.5-6.5 5.5-8.5" /></svg>`
                 },
                 {
                     number: "04",
                     title: "WASH",
-                    image: "assets/oil-step4.png",
+                    image: "assets/hair4.webp",
                     description: "Wash thoroughly with a mild shampoo and rinse well. Use as part of your regular hair-care routine.",
                     icon: `<svg class="ritual-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18" /><path d="M12 3v13M8 12l4 4 4-4" /></svg>`
                 }
@@ -839,47 +893,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = whatsappUrl;
                 };
 
-                // Perform the POST fetch request
-                fetch('/api/enquiry', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Transition to success state on successful response
-                    enquiryForm.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    enquiryForm.style.opacity = '0';
-                    enquiryForm.style.transform = 'translateY(-10px)';
-                    
-                    setTimeout(() => {
-                        enquiryForm.style.display = 'none';
-                        formSuccess.style.display = 'block';
-                        enquiryForm.reset();
-                        performRedirect();
-                    }, 300);
-                })
-                .catch(error => {
-                    console.warn('API submission failed, using graceful frontend fallback success state:', error);
-                    // Fallback visual success state
-                    enquiryForm.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    enquiryForm.style.opacity = '0';
-                    enquiryForm.style.transform = 'translateY(-10px)';
-                    
-                    setTimeout(() => {
-                        enquiryForm.style.display = 'none';
-                        formSuccess.style.display = 'block';
-                        enquiryForm.reset();
-                        performRedirect();
-                    }, 300);
-                });
+                performRedirect();
             }
         });
     }
@@ -1152,6 +1166,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function switchModalMode(mode) {
         currentModalMode = mode;
         
+        const successTitle = document.querySelector('.order-success-title');
+        const successDesc = document.querySelector('.order-success-desc');
+        
         if (mode === 'order') {
             if (tabOrder) tabOrder.classList.add('active');
             if (tabEnquiry) tabEnquiry.classList.remove('active');
@@ -1170,7 +1187,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageTextarea.placeholder = 'Add any shipping notes, custom quantities or instructions here...';
                 messageTextarea.required = false;
             }
-            if (submitBtnSpan) submitBtnSpan.innerText = 'Place Order';
+            if (submitBtnSpan) submitBtnSpan.innerText = 'Continue to WhatsApp';
+            
+            if (successTitle) successTitle.innerText = "Order Details Ready";
+            if (successDesc) successDesc.innerText = "Your order details are ready. Continue to WhatsApp and tap Send to complete your request.";
         } else {
             if (tabEnquiry) tabEnquiry.classList.add('active');
             if (tabOrder) tabOrder.classList.remove('active');
@@ -1189,7 +1209,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageTextarea.placeholder = 'Add custom notes, questions or requests...';
                 messageTextarea.required = true;
             }
-            if (submitBtnSpan) submitBtnSpan.innerText = 'Send Enquiry';
+            if (submitBtnSpan) submitBtnSpan.innerText = 'Continue to WhatsApp';
+            
+            if (successTitle) successTitle.innerText = "Enquiry Details Ready";
+            if (successDesc) successDesc.innerText = "Your enquiry details are ready. Continue to WhatsApp and tap Send to complete your request.";
         }
         
         // Clear prior error labels on switch
@@ -1373,28 +1396,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.href = whatsappUrl;
                     };
 
-                    fetch('/api/order', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(orderData)
-                    })
-                    .then(response => {
-                        if (!response.ok) throw new Error('API order failed');
-                        return response.json();
-                    })
-                    .then(data => {
-                        orderFormBody.style.display = 'none';
-                        orderSuccessBody.style.display = 'block';
-                        performRedirect();
-                    })
-                    .catch(err => {
-                        console.warn('API order failed, using client-side success transition:', err);
-                        orderFormBody.style.display = 'none';
-                        orderSuccessBody.style.display = 'block';
-                        performRedirect();
-                    });
+                    performRedirect();
                 }
             } else {
                 // Enquiry mode: Message is required
@@ -1433,28 +1435,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.href = whatsappUrl;
                     };
 
-                    fetch('/api/enquiry', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(enquiryData)
-                    })
-                    .then(response => {
-                        if (!response.ok) throw new Error('API enquiry failed');
-                        return response.json();
-                    })
-                    .then(data => {
-                        orderFormBody.style.display = 'none';
-                        orderSuccessBody.style.display = 'block';
-                        performRedirect();
-                    })
-                    .catch(err => {
-                        console.warn('API enquiry failed, using client-side success transition:', err);
-                        orderFormBody.style.display = 'none';
-                        orderSuccessBody.style.display = 'block';
-                        performRedirect();
-                    });
+                    performRedirect();
                 }
             }
         });
