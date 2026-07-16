@@ -142,7 +142,7 @@ body:hover .custom-cursor-follower {
 }
 
 .nav-logo-image {
-    height: 100px;
+    height: 52px;
     width: auto;
     object-fit: contain;
     transition: height 0.4s ease;
@@ -154,7 +154,7 @@ body:hover .custom-cursor-follower {
 
 @media (max-width: 900px) {
     .nav-logo-image {
-        height: 52px;
+        height: 44px;
     }
     .navbar.scrolled .nav-logo-image {
         height: 44px;
@@ -163,7 +163,7 @@ body:hover .custom-cursor-follower {
 
 @media (max-width: 600px) {
     .nav-logo-image {
-        height: 44px;
+        height: 38px;
     }
     .navbar.scrolled .nav-logo-image {
         height: 38px;
