@@ -887,7 +887,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageText += `Product of Interest: ${interestText}\n\n`;
                 messageText += `Message:\n${formData.message}\n`;
 
-                const whatsappUrl = `https://wa.me/917806845469?text=${encodeURIComponent(messageText)}`;
+                const whatsappUrl = `https://wa.me/918838917346?text=${encodeURIComponent(messageText)}`;
 
                 const performRedirect = () => {
                     window.location.href = whatsappUrl;
@@ -1390,7 +1390,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         messageText += `\nSpecial Instructions:\n${orderData.message}\n`;
                     }
 
-                    const whatsappUrl = `https://wa.me/917806845469?text=${encodeURIComponent(messageText)}`;
+                    const whatsappUrl = `https://wa.me/918838917346?text=${encodeURIComponent(messageText)}`;
 
                     const performRedirect = () => {
                         window.location.href = whatsappUrl;
@@ -1429,7 +1429,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     messageText += `Product of Interest: ${interestText}\n\n`;
                     messageText += `Message:\n${enquiryData.message}\n`;
 
-                    const whatsappUrl = `https://wa.me/917806845469?text=${encodeURIComponent(messageText)}`;
+                    const whatsappUrl = `https://wa.me/918838917346?text=${encodeURIComponent(messageText)}`;
 
                     const performRedirect = () => {
                         window.location.href = whatsappUrl;

@@ -3544,8 +3544,8 @@ a.contact-row-value:hover {
 
 .footer-columns {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr 1fr;
-    gap: 80px;
+    grid-template-columns: 1.2fr 0.8fr 1fr 1fr;
+    gap: 60px;
     text-align: left;
 }
 
@@ -3578,6 +3578,28 @@ a.contact-row-value:hover {
     line-height: 1.7;
     color: #A9ADA7;
     max-width: 320px;
+}
+
+/* Address Column */
+.footer-address-block {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.footer-address-icon {
+    flex-shrink: 0;
+    color: #C6A15B;
+    margin-top: 2px;
+}
+
+.footer-address-text {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 0.94rem;
+    line-height: 1.8;
+    color: #A9ADA7;
+    letter-spacing: 0.01em;
 }
 
 /* Navigation Links */
@@ -3804,6 +3826,9 @@ a.contact-row-value:hover {
         gap: 50px 40px;
     }
     .brand-col {
+        grid-column: span 2;
+    }
+    .address-col {
         grid-column: span 2;
     }
 }
